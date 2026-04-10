@@ -1,6 +1,6 @@
-# Open-Source-Prototyping-Systems
+# Open Source Prototyping Systems
 
-course projects for "Open Source Prototyping Systems and Applications" at NSYSU
+course projects for "Open Source Prototyping Systems and Applications (2026)" at NSYSU
 
 ## Projects
 
