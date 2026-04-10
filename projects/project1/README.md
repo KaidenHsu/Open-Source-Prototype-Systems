@@ -1,4 +1,4 @@
-# RV32I Single-Cycle Baseline Processor
+# Project 1. RV32I Single-Cycle Baseline Processor
 
 <p align="center"><img src="images/block_diagram.png" alt="block diagram" width="720" /></p>
 <p align="center"><img src="images/timing_diagram.png" alt="timing diagram" width="720" /></p>
@@ -38,7 +38,7 @@ This baseline processor supports a specific subset of the RISC-V ISA
 
 ## IV. Design Philosophy
 
-This work serves as a fundamental baseline design. It will require further pipelining and extensive PPA (Power, Performance, Area) optimization to meet real-world implementation demands.
+This work serves as a **fundamental baseline design**. It will require further pipelining and extensive PPA (Power, Performance, Area) optimization to meet real-world implementation demands.
 
 ## V. Verification
 
