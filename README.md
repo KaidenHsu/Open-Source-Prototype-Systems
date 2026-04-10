@@ -17,4 +17,4 @@ course projects and slides for "Open Source Prototyping Systems and Applications
 
 [1]: projects/project1/
 
-<p align="center"><img src="images/RISCV_OS.png" alt="RISCV" width="720" /></p>
+<p align="center"><img src="images/RISCV_OS.jpg" alt="RISCV" width="720" /></p>
