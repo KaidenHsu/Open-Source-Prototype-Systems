@@ -1,9 +1,16 @@
 # Project 1. RV32I Single-Cycle Baseline Processor
 
+## I. Block Diagram
+
 <p align="center"><img src="images/block_diagram.png" alt="block diagram" width="720" /></p>
+
+* all datapaths are 32-bit wide except for the output signals of controller and instruction parser
+
+## II. Timing Diagram
+
 <p align="center"><img src="images/timing_diagram.png" alt="timing diagram" width="720" /></p>
 
-## I. Supported Commands
+## III. Supported Commands
 
 This baseline processor supports a specific subset of the RISC-V ISA
 
@@ -15,7 +22,7 @@ This baseline processor supports a specific subset of the RISC-V ISA
 | **Branches** | `beq`, `bne`, `blt`, `bge` |
 | **Jump** | `jal` |
 
-## II. Implemented Modules
+## IV. Implemented Modules
 
 * `adder.sv`
 * `alu.sv`
@@ -31,16 +38,16 @@ This baseline processor supports a specific subset of the RISC-V ISA
 * `single_cycle_top.sv`
 * `testbench.sv`
 
-## III. Known Limitations
+## V. Known Limitations
 
 * This work only supports a limited subset of RISC-V instructions. Notably, U-type instructions and `jalr` are not supported.
 * Although this project aims for synthesizable code, the current single-cycle design is unoptimized and will definitely destroy the timing closure of any physical implementation.
 
-## IV. Design Philosophy
+## VI. Design Philosophy
 
 This work serves as a **fundamental baseline design**. It will require further pipelining and extensive PPA (Power, Performance, Area) optimization to meet real-world implementation demands.
 
-## V. Verification
+## VII. Verification
 
 The datapath is verified using the following program
 
