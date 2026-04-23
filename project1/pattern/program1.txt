@@ -55,7 +55,7 @@
     2. S type + f3 -> sw
     3. identify remaining fields (rs1, rs2, imm)
     4. instruction: sw x3(gp), x0(zero)(0)
-    5. interpretation: mem[zero+0] = gp
+    5. interpretation: dmem[zero+0] = gp
 
 * 00002403
     000000000000_00000_010_01000_0000011
@@ -64,8 +64,8 @@
     1. opcode -> I type
     2. I type + f3 -> lw
     3. identify remaining fields (rs1, rs2, imm)
-    4. instruction: sw x0(zero), x0(zero), 0
-    5. interpretation: s0 = mem[zero+0]
+    4. instruction: lw x8(fp), x0(zero), 0
+    5. interpretation: fp = dmem[zero+0]
 
 * 00000013
     000000000000_00000_000_00000_0010011
@@ -76,6 +76,9 @@
     3. identify remaining fields (rs1, rd, imm)
     4. instruction: addi x0(zero), x0(zero), 0
     5. interpretation: nop
+
+* addi x14, x0, 999     # Execution completes safely.
+* jal  x0, 0            # Infinite loop to gracefully halt.
      
 ==========================================================
 ra = 5
@@ -83,8 +86,8 @@ sp = 7
 pc += 8 (skip next instruction)
 gp = 99 (skipped due to branching)
 gp = ra + sp
-gp = dmem[0]
-s0 = dmem[0]
+dmem[0] = gp
+fp = dmem[0]
 nop
 
 end result: x8 = 12

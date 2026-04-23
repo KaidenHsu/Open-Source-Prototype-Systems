@@ -20,13 +20,19 @@ module data_mem(
     // TODO: Implement synchronous word stores for sw.
     // Use addr[9:2] as the word index.
     always_ff @(posedge clk) begin
-        mem_array[addr] <= write_data;
+        if (MemWrite) begin
+            mem_array[{22'b0, addr[9:2], 2'b0}] <= write_data;
+        end
     end
 
-    // TODO: Implement combinational word reads for lw.
+    // Implement combinational word reads for lw.
     // When MemRead is low, return 32'b0.
     always_comb begin
-        read_data = mem_array[addr];
+        if (MemRead) begin
+            read_data = mem_array[{22'b0, addr[9:2], 2'b0}];
+        end else begin
+            read_data = 32'b0;
+        end
     end
 
 endmodule

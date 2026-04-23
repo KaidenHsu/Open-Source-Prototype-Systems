@@ -1,0 +1,100 @@
+00000000 <main>:
+  # --- INIT POINTERS ---
+  00: addi x2, x0, 100      # sp = 100
+  04: addi x8, x0, 100      # fp = 100
+
+  # --- INIT MEMORY ARRAY ---
+  # We will store an array of 2 elements at addresses 0x0 and 0x4
+  08: addi x20, x0, 5       # x20 = 5
+  0c: sw   x20, 0(x0)       # mem[0] = 5
+  10: addi x20, x0, -4      # x20 = -4
+  14: sw   x20, 4(x0)       # mem[4] = -4
+
+  # --- LOCAL TEMPORARIES ---
+  18: addi x5, x0, 15       # x5 (t0) = 15
+  1c: addi x6, x0, 25       # x6 (t1) = 26
+
+  # --- STACK FRAME SETUP ---
+  # sp is callee-saved; this only preserves caller-saved temporaries across the call
+  20: addi x2, x2, -8       # allocate 8 bytes of stack space
+  24: sw   x5, 4(x2)        # spill x5
+  28: sw   x6, 0(x2)        # spill x6
+
+  # --- FUNCTION ARGUMENTS ---
+  2c: addi x10, x0, 0       # x10 (a0) = 0 (Base address of our array)
+  30: addi x11, x0, 2       # x11 (a1) = 2 (Array length)
+
+  # --- CALL FUNCTION ---
+  # Target = 0x34 + 24 = 0x4c
+  34: jal  x1, 24           # Jump to <do_math>
+
+00000038 <return_point>:
+  # --- STACK FRAME TEARDOWN ---
+  38: lw   x6, 0(x2)        # restore x6 from stack
+  3c: lw   x5, 4(x2)        # restore x5 from stack
+  40: addi x2, x2, 8        # release the stack frame
+
+  # --- JUMP OVER TRAP ---
+  # Target = 0x44 + 52 = 0x78
+  44: jal  x0, 52           # Jump to <success>
+
+00000048 <trap_zone>:
+  48: addi x31, x0, -1      # TRAP (Failure indicator)
+
+0000004c <do_math>:
+  # --- LOOP INIT ---
+  4c: addi x7, x0, 0        # x7 (t2) = 0 (Loop counter 'i')
+
+00000050 <loop_start>:
+  # --- LOOP CONDITION ---
+  # Target = 0x50 + 32 = 0x70
+  50: beq  x7, x11, 32      # if (i == length), break out of loop to <loop_end>
+
+  # --- LOOP BODY ---
+  54: lw   x29, 0(x10)      # Load current array element
+  58: slli x30, x29, 2      # Shift left logical by 2 (Multiply by 4)
+  5c: srai x30, x30, 1      # Shift right arithmetic by 1 (Divide by 2, preserve sign)
+  60: sw   x30, 0(x10)      # Store modified element back to memory
+
+  # --- ITERATE ---
+  64: addi x10, x10, 4      # Increment array pointer by 4 bytes
+  68: addi x7, x7, 1        # i++
+  
+  # Target = 0x6c - 28 = 0x50. (-28 is 0xFFFFFFE4)
+  6c: jal  x0, -28          # Jump back to <loop_start>
+
+00000070 <loop_end>:
+  # --- EPILOGUE ---
+  70: addi x10, x0, 99      # Put a dummy return value in a0 just to test writeback
+  # Target = 0x74 - 60 = 0x38. (-60 is 0xFFFFFFC4)
+  74: jal  x0, -60          # Return to <return_point>
+
+00000078 <success>:
+  78: addi x14, x0, 999     # Execution completes safely.
+  7c: jal  x0, 0            # Infinite loop to gracefully halt.
+  
+
+===========================================================
+* Final state:
+
+x2/sp = 100
+x8/fp = 100
+
+// local temporaries
+x5 = 15
+x6 = 25
+
+// funct args 
+x11 = 22
+
+// function return
+x10 = 99
+x14 = 999
+
+// dmem
+dmem[0] = 10
+dmem[4] = -8
+
+dmem[96] = x5 = 15
+dmem[92] = x6 = 25
+==========================================================
