@@ -30,9 +30,6 @@ The datapath is verified using the following program
 ./run.sh
 ```
 
-* `tb/testbench.sv`: integration test + pc test
-* `tb/alu_tb.sv`, `tb/control_unit_tb.sv`, `tb/imm_gen_tb.sv`, `tb/regfile_tb.sv`: unit tests
-
 ``` c
 int memory[]; // Represents your single-cycle processor's Data Memory
 
@@ -99,12 +96,7 @@ int do_math(int* base_address, int length) {
 }
 ```
 
-## 5. Known Limitations
-
-* This work only supports a limited subset of RISC-V instructions. Notably, U-type instructions and `jalr` are not supported.
-* Although this project aims for synthesizable code, the current single-cycle design is unoptimized and will definitely destroy the timing closure of any physical implementation.
-
-## 6. Implemented Modules
+## 5. Implemented Modules
 
 * design
     * `single_cycle_top.sv`
@@ -121,8 +113,15 @@ int do_math(int* base_address, int length) {
     * `regfile.sv`
 
 * testbench
-    * `tb/testbench.sv`
-    * `tb/alu_tb.sv`
-    * `tb/control_unit_tb.sv`
-    * `tb/imm_gen_tb.sv`
-    * `tb/regfile_tb.sv`
+    * integration test
+        * `tb/testbench.sv`
+    * unit tests
+        * `tb/alu_tb.sv`
+        * `tb/control_unit_tb.sv`
+        * `tb/imm_gen_tb.sv`
+        * `tb/regfile_tb.sv`
+
+## 6. Known Limitations
+
+* This work only supports a limited subset of RISC-V instructions. Notably, U-type instructions and `jalr` are not supported.
+* Although this project aims for synthesizable code, the current single-cycle design is unoptimized and will definitely destroy the timing closure of any physical implementation.
