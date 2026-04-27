@@ -73,7 +73,8 @@ module control_unit(
             lw || sw
         ) begin
             ALUControl = 0; // add
-        end else if ((R && funct3 == 0 && funct7 == 7'h20) // sub
+        end else if ((R && funct3 == 0 && funct7 == 7'h20) || // sub
+            B
         )  begin
             ALUControl = 1; // sub
         end else if ((R && funct3 == 4 && funct7 == 7'h00) || // xor
