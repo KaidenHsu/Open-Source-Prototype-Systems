@@ -40,6 +40,10 @@ The memory hierarchy leverages a **Harvard architecture** with separate instruct
 
 Execution correctness and cycle counts are verified against multiple workloads:
 
+``` bash
+$ ./run.sh
+```
+
 | Test Case | passthru | icache | icache+dcache |
 | :--- | :--- | :--- | :--- |
 | `no-haz` | 54 | 24 | 24 |
