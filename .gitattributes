@@ -1,0 +1,5 @@
+*.bib linguist-generated
+*.dot linguist-generated
+*.svg linguist-generated
+*.ini linguist-generated
+*.json linguist-generated
