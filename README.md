@@ -7,7 +7,9 @@ course projects for "Open Source Prototype Systems and Applications (2026 Spring
  Projects   | Descriptions
 --------|:-----
 [Project 1][1]| RV32I Single-Cycle Baseline Processor
+[Project 2-1][2]| RV32I Pipelined Processor with Cache Subsystem
 
 [1]: project1/
+[2]: project2_1/
 
 <p align="center"><img src="images/RISCV.png" alt="RISCV" /></p>
