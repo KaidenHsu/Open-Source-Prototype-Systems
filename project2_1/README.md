@@ -1,4 +1,4 @@
-# Project 2. RV32I Pipelined Processor with Cache Subsystem
+# Project 2-1. RV32I Pipelined Processor with Cache Subsystem
 
 ## 1. 5-Stage Pipelined Processor
 
