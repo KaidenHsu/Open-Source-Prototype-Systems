@@ -1,0 +1,325 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Apr 29 05:08:56 2026
+[*]
+[dumpfile] "/mnt/c/Users/ryanh/Documents/Courses/1-2/OpenSourcePrototypeSystemsAndApplications/projects/p2/project2_histogram_starter/project2.vcd"
+[dumpfile_mtime] "Wed Apr 29 04:38:50 2026"
+[dumpfile_size] 42535
+[savefile] "/mnt/c/Users/ryanh/Documents/Courses/1-2/OpenSourcePrototypeSystemsAndApplications/projects/p2/project2_histogram_starter/traces/pipeline_core.gtkw"
+[timestart] 15
+[size] 3840 2113
+[pos] -1 -1
+*-5.920136 355 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_project2.
+[treeopen] TOP.tb_project2.dut.
+[treeopen] TOP.tb_project2.dut.u_core.
+[sst_width] 297
+[signals_width] 329
+[sst_expanded] 1
+[sst_vpaned_height] 683
+@28
+[color] 3
+TOP.tb_project2.dut.u_core.clk
+[color] 3
+TOP.tb_project2.dut.u_core.reset
+@200
+-
+@28
+[color] 3
+TOP.tb_project2.dut.u_core.halted
+[color] 3
+TOP.tb_project2.dut.u_core.mem_stall
+[color] 3
+TOP.tb_project2.dut.u_core.fetch_stall
+[color] 1
+TOP.tb_project2.dut.u_core.stall
+@200
+-
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.pc_reg[31:0]
+@200
+-
+@28
+TOP.tb_project2.dut.u_core.ic_req
+TOP.tb_project2.dut.u_ic_one_pulser.one_pulsed_req
+@200
+-
+@28
+TOP.tb_project2.dut.u_icache.mem_req
+@22
+TOP.tb_project2.dut.u_icache.mem_addr[31:0]
+TOP.tb_project2.dut.u_icache.mem_wdata[31:0]
+@200
+-
+@28
+TOP.tb_project2.dut.u_imem_back.busy
+@22
+TOP.tb_project2.dut.u_imem_back.delay[3:0]
+TOP.tb_project2.dut.u_imem_back.addr_q[31:0]
+@200
+-
+@22
+TOP.tb_project2.dut.u_icache.mem_rdata[31:0]
+@28
+TOP.tb_project2.dut.u_icache.mem_ready
+@200
+-
+@22
+TOP.tb_project2.dut.u_core.ic_addr[31:0]
+TOP.tb_project2.dut.u_core.ic_rdata[31:0]
+@28
+TOP.tb_project2.dut.u_core.ic_ready
+@200
+-
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.IF_ID_PC[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.IF_ID_INSTR[31:0]
+@28
+[color] 2
+TOP.tb_project2.dut.u_core.IF_ID_VALID
+[color] 1
+TOP.tb_project2.dut.u_core.flush_if_id
+@200
+-
+@28
+TOP.tb_project2.dut.u_core.opcode_d[6:0]
+TOP.tb_project2.dut.u_core.rd_d[4:0]
+TOP.tb_project2.dut.u_core.funct3_d[2:0]
+TOP.tb_project2.dut.u_core.rs1_d[4:0]
+TOP.tb_project2.dut.u_core.rs2_d[4:0]
+TOP.tb_project2.dut.u_core.funct7_d[6:0]
+@200
+-
+@28
+TOP.tb_project2.dut.u_core.reg_write
+TOP.tb_project2.dut.u_core.mem_read
+TOP.tb_project2.dut.u_core.mem_write
+TOP.tb_project2.dut.u_core.mem_to_reg
+TOP.tb_project2.dut.u_core.alu_src_imm
+@24
+TOP.tb_project2.dut.u_core.alu_ctrl[3:0]
+@28
+TOP.tb_project2.dut.u_core.is_branch
+TOP.tb_project2.dut.u_core.is_jal
+@200
+-
+@22
+TOP.tb_project2.dut.u_core.rs1_val[31:0]
+TOP.tb_project2.dut.u_core.rs2_val[31:0]
+@200
+-
+@c00022
+TOP.tb_project2.dut.u_core.imm_i[31:0]
+@28
+(0)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(1)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(2)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(3)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(4)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(5)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(6)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(7)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(8)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(9)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(10)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(11)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(12)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(13)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(14)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(15)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(16)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(17)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(18)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(19)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(20)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(21)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(22)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(23)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(24)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(25)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(26)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(27)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(28)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(29)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(30)TOP.tb_project2.dut.u_core.imm_i[31:0]
+(31)TOP.tb_project2.dut.u_core.imm_i[31:0]
+@1401200
+-group_end
+@22
+TOP.tb_project2.dut.u_core.imm_s[31:0]
+TOP.tb_project2.dut.u_core.imm_b[31:0]
+TOP.tb_project2.dut.u_core.imm_j[31:0]
+@24
+TOP.tb_project2.dut.u_core.imm_sel[2:0]
+@22
+TOP.tb_project2.dut.u_core.imm[31:0]
+@200
+-
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_PC[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_INSTR[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_RS1_VAL[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_RS2_VAL[31:0]
+@24
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_RS1[4:0]
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_RS2[4:0]
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_RD[4:0]
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_IMM[31:0]
+@28
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_VALID
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_REG_WRITE
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_MEM_TO_REG
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_IS_JAL
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_MEM_READ
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_MEM_WRITE
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_ALU_CTRL[3:0]
+@28
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_ALU_SRC_IMM
+@24
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_ALU_CTRL[3:0]
+@28
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_IS_BRANCH
+@24
+[color] 2
+TOP.tb_project2.dut.u_core.ID_EX_FUNCT3[2:0]
+@28
+[color] 1
+TOP.tb_project2.dut.u_core.flush_id_ex
+@200
+-
+@24
+TOP.tb_project2.dut.u_core.fwd_a_sel[1:0]
+@22
+TOP.tb_project2.dut.u_core.alu_a_input[31:0]
+@24
+TOP.tb_project2.dut.u_core.fwd_b_sel[1:0]
+@22
+TOP.tb_project2.dut.u_core.rs2_e[31:0]
+TOP.tb_project2.dut.u_core.alu_b_input[31:0]
+TOP.tb_project2.dut.u_core.alu_result[31:0]
+@28
+TOP.tb_project2.dut.u_core.zero
+TOP.tb_project2.dut.u_core.branch_taken
+@22
+TOP.tb_project2.dut.u_core.branch_target[31:0]
+@200
+-
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_PC[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_INSTR[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_ALU_RESULT[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_RS2_FORWARD_VAL[31:0]
+@24
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_RD[4:0]
+@28
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_VALID
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_REG_WRITE
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_MEM_TO_REG
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_IS_JAL
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_MEM_READ
+[color] 2
+TOP.tb_project2.dut.u_core.EX_MEM_MEM_WRITE
+@200
+-
+@28
+TOP.tb_project2.dut.u_core.dc_req
+TOP.tb_project2.dut.u_dc_one_pulser.one_pulsed_req
+@22
+TOP.tb_project2.dut.u_core.dc_addr[31:0]
+@28
+TOP.tb_project2.dut.u_core.dc_we
+@22
+TOP.tb_project2.dut.u_core.dc_wdata[31:0]
+@200
+-
+@22
+TOP.tb_project2.dut.u_dmem_back.addr_q[31:0]
+@28
+TOP.tb_project2.dut.u_dmem_back.we_q
+@22
+TOP.tb_project2.dut.u_dmem_back.wdata_q[31:0]
+@28
+TOP.tb_project2.dut.u_dmem_back.busy
+@22
+TOP.tb_project2.dut.u_dmem_back.delay[3:0]
+@200
+-
+@22
+TOP.tb_project2.dut.u_core.dc_rdata[31:0]
+@29
+TOP.tb_project2.dut.u_core.dc_ready
+@200
+-
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_PC[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_INSTR[31:0]
+@24
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_RD[4:0]
+@22
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_ALU_RESULT[31:0]
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_MEM_DATA[31:0]
+@28
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_VALID
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_REG_WRITE
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_MEM_TO_REG
+[color] 2
+TOP.tb_project2.dut.u_core.MEM_WB_IS_JAL
+@200
+-
+@22
+TOP.tb_project2.dut.u_core.wb_data[31:0]
+@200
+-
+@24
+[color] 3
+TOP.tb_project2.dut.u_core.cycle_count[31:0]
+[color] 3
+TOP.tb_project2.dut.u_core.branch_flush_cycles[31:0]
+[color] 3
+TOP.tb_project2.dut.u_core.retired_count[31:0]
+[color] 3
+TOP.tb_project2.dut.u_core.stall_cycles[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

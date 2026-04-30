@@ -1,0 +1,6 @@
+00100093 // addi x1, x0, 1 => x1 = 1
+00100113 // addi x2, x0, 1 => x2 = 1
+00208463 // beq x1, x2, 8 => branch taken (skip next instruction)
+06300193 // addi x3, x0, 99 (must be flushed)
+02a00213 // addi x4, x0, 42
+ffffffff

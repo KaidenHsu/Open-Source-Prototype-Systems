@@ -1,0 +1,86 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Tue Apr 28 14:54:13 2026
+[*]
+[dumpfile] "/mnt/c/Users/ryanh/Documents/Courses/1-2/OpenSourcePrototypeSystemsAndApplications/projects/p2/project2_histogram_starter/project2.vcd"
+[dumpfile_mtime] "Tue Apr 28 14:52:41 2026"
+[dumpfile_size] 31584
+[savefile] "/mnt/c/Users/ryanh/Documents/Courses/1-2/OpenSourcePrototypeSystemsAndApplications/projects/p2/project2_histogram_starter/traces/dcache.gtkw"
+[timestart] 15
+[size] 3840 2113
+[pos] -1 -1
+*-4.960182 202 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_project2.
+[treeopen] TOP.tb_project2.dut.
+[sst_width] 297
+[signals_width] 264
+[sst_expanded] 1
+[sst_vpaned_height] 683
+@28
+[color] 2
+TOP.tb_project2.dut.u_dcache.clk
+[color] 2
+TOP.tb_project2.dut.u_dcache.reset
+@200
+-
+@28
+[color] 3
+TOP.tb_project2.dut.u_one_pulser.signal_i
+[color] 3
+TOP.tb_project2.dut.u_one_pulser.prev_signal_level
+[color] 3
+TOP.tb_project2.dut.u_one_pulser.signal_o
+@200
+-
+@28
+TOP.tb_project2.dut.u_dcache.cpu_req
+@22
+TOP.tb_project2.dut.u_dcache.cpu_addr[31:0]
+@28
+TOP.tb_project2.dut.u_dcache.cpu_we
+@22
+TOP.tb_project2.dut.u_dcache.cpu_wdata[31:0]
+@200
+-
+@28
+[color] 3
+TOP.tb_project2.dut.u_dcache.mem_req
+@22
+[color] 3
+TOP.tb_project2.dut.u_dcache.mem_addr[31:0]
+@28
+[color] 3
+TOP.tb_project2.dut.u_dcache.mem_we
+@22
+[color] 3
+TOP.tb_project2.dut.u_dcache.mem_wdata[31:0]
+@200
+-
+@28
+TOP.tb_project2.dut.u_dcache.mem_ready
+@22
+TOP.tb_project2.dut.u_dcache.mem_rdata[31:0]
+@200
+-
+@22
+[color] 3
+TOP.tb_project2.dut.u_dcache.cpu_rdata[31:0]
+@29
+[color] 3
+TOP.tb_project2.dut.u_dcache.cpu_ready
+@200
+-
+@24
+[color] 2
+TOP.tb_project2.dut.u_dcache.access_count[31:0]
+[color] 2
+TOP.tb_project2.dut.u_dcache.hit_count[31:0]
+[color] 2
+TOP.tb_project2.dut.u_dcache.miss_count[31:0]
+[color] 2
+TOP.tb_project2.dut.u_dcache.read_count[31:0]
+[color] 2
+TOP.tb_project2.dut.u_dcache.write_count[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
