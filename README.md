@@ -1,6 +1,6 @@
 # Open Source Prototype Systems
 
-course projects for "Open Source Prototype Systems and Applications (2026 Spring)" at NSYSU
+course projects for "Open Source Prototype Systems and Applications (2026 Spring)" in NSYSU, Taiwan
 
 ## Projects
 
