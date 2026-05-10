@@ -5,8 +5,12 @@
 - Convert observed failures into a precise invariant and validate fixes with the provided test cases (`run-case-b`, `run-case-c`, `run-case-d`).
 - Implement one or more assertion goals from Exercise F near the end of `rtl/two_core_cache_system.sv` before `endmodule`.
 
+**Quick Start:**
+``` bash
+$ ./run.sh
+```
 
-# 2. Architecture Diagram
+# 2. System Architecture
 
 The design is a minimal two-core cache system with a shared backing memory and per-core direct-mapped caches. Key files:
 
@@ -31,10 +35,6 @@ The design is a minimal two-core cache system with a shared backing memory and p
 - Core 0 interface (valid, we, addr, wdata) maps to C0 private cache and shared memory
 - Core 1 interface (valid, we, addr, wdata) maps to C1 private cache and shared memory
 - Snoop invalidation links the two private caches on conflicting writes
-
-``` bash
-$ ./run.sh
-```
 
 # 3. Baseline Stabiliization Run
 
@@ -181,7 +181,7 @@ $ make run-raw-trace
 Notes: the `trace_replay` task in `rtl/tb_week11.sv` gracefully falls back to the directed default if it cannot open the trace file.
 
 
-# 8. Exercise F: SystemVerilog Assertion (SVA)
+# 8. Exercise F: Assertions
 
 | No | Assertion goal |
 |---|---|
