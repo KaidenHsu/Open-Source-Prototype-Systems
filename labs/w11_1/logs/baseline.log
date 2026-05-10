@@ -1,0 +1,35 @@
+
+--- Trace replay: traces/coherence_directed.trace ---
+PASS[trace line 2]: C0  READ addr=0x20 data=0x10000008 hit=0 inv0=0 inv1=0
+PASS[trace line 3]: C1  READ addr=0x20 data=0x10000008 hit=0 inv0=0 inv1=0
+PASS[trace line 4]: C0 WRITE addr=0x20 data=0xcafe0001 hit=1 inv0=0 inv1=1
+PASS[trace line 5]: C1  READ addr=0x20 data=0xcafe0001 hit=0 inv0=0 inv1=0
+PASS[trace line 6]: C1 WRITE addr=0x20 data=0xbeef0002 hit=1 inv0=1 inv1=0
+PASS[trace line 7]: C0  READ addr=0x20 data=0xbeef0002 hit=0 inv0=0 inv1=0
+PASS[trace line 8]: C0  READ addr=0x20 data=0xbeef0002 hit=1 inv0=0 inv1=0
+
+--- Random stress tests ---
+PASS[rnd0]: C0  READ addr=0x08 data=0x10000002 hit=0 inv0=0 inv1=0
+PASS[rnd1]: C0 WRITE addr=0x30 data=0xd0000001 hit=0 inv0=0 inv1=0
+PASS[rnd2]: C0  READ addr=0x1c data=0x10000007 hit=0 inv0=0 inv1=0
+PASS[rnd3]: C1 WRITE addr=0x04 data=0xd0000003 hit=0 inv0=0 inv1=0
+PASS[rnd4]: C1 WRITE addr=0x08 data=0xd0000004 hit=0 inv0=1 inv1=0
+PASS[rnd5]: C1  READ addr=0x18 data=0x10000006 hit=0 inv0=0 inv1=0
+PASS[rnd6]: C1  READ addr=0x2c data=0x1000000b hit=0 inv0=0 inv1=0
+PASS[rnd7]: C0 WRITE addr=0x30 data=0xd0000007 hit=1 inv0=0 inv1=0
+PASS[rnd8]: C0 WRITE addr=0x38 data=0xd0000008 hit=0 inv0=0 inv1=0
+PASS[rnd9]: C0 WRITE addr=0x18 data=0xd0000009 hit=0 inv0=0 inv1=1
+PASS[rnd10]: C1  READ addr=0x34 data=0x1000000d hit=0 inv0=0 inv1=0
+PASS[rnd11]: C0  READ addr=0x04 data=0xd0000003 hit=0 inv0=0 inv1=0
+PASS[rnd12]: C1 WRITE addr=0x3c data=0xd000000c hit=0 inv0=0 inv1=0
+PASS[rnd13]: C0  READ addr=0x04 data=0xd0000003 hit=1 inv0=0 inv1=0
+PASS[rnd14]: C0  READ addr=0x38 data=0xd0000008 hit=0 inv0=0 inv1=0
+PASS[rnd15]: C0  READ addr=0x2c data=0x1000000b hit=0 inv0=0 inv1=0
+PASS[rnd16]: C0 WRITE addr=0x18 data=0xd0000010 hit=0 inv0=0 inv1=0
+PASS[rnd17]: C1 WRITE addr=0x0c data=0xd0000011 hit=0 inv0=0 inv1=0
+PASS[rnd18]: C1 WRITE addr=0x14 data=0xd0000012 hit=0 inv0=0 inv1=0
+PASS[rnd19]: C1  READ addr=0x30 data=0xd0000007 hit=0 inv0=0 inv1=0
+
+SUMMARY: LAB_VARIANT=0 checks=27 errors=0
+RESULT: PASS
+- rtl/tb_week11.sv:230: Verilog $finish

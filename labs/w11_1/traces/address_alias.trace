@@ -1,0 +1,4 @@
+# Same index, different tag
+R 0 20 00000000
+R 0 30 00000000
+R 0 20 00000000
