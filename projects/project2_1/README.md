@@ -31,7 +31,7 @@ The memory hierarchy leverages a **Harvard architecture** with separate instruct
 <p align="center"><img src="images/dcache_read_miss_timing_diagram.jpg" alt="dcache read_miss timing diagram" width="720" /></p>
 <p align="center"><img src="images/dcache_write_miss_timing_diagram.jpg" alt="dcache write_miss timing diagram" width="720" /></p>
 
-### 3.1. Cache Controller
+### 3.2. Cache Controller
 
 <p align="center"><img src="images/icache_controller.jpg" alt="icache controller" width="720" /></p>
 <p align="center"><img src="images/dcache_controller.jpg" alt="dcache controller" width="720" /></p>
