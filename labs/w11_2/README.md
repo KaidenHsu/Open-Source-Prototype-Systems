@@ -1,4 +1,4 @@
-# Gem5: Producer-Consumer Multithreading Workload
+# Week11 Lab2. Gem5: Producer-Consumer Multithreading Workload
 
 ## 1. Overview
 

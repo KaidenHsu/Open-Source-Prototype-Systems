@@ -1,4 +1,6 @@
-# 1. Learning Objectives
+# Week11 Lab1. Two-Core Cache Coherence Prototype System
+
+## 1. Learning Objectives
 
 - Understand the two-core cache microarchitecture used in this exercise and the coherence checks implemented as SystemVerilog assertions.
 - Be able to run the supplied directed and randomized tests and interpret the self-checking log output.
@@ -10,7 +12,7 @@
 $ ./run.sh
 ```
 
-# 2. System Architecture
+## 2. System Architecture
 
 The design is a minimal two-core cache system with a shared backing memory and per-core direct-mapped caches. Key files:
 
@@ -36,7 +38,7 @@ The design is a minimal two-core cache system with a shared backing memory and p
 - Core 1 interface (valid, we, addr, wdata) maps to C1 private cache and shared memory
 - Snoop invalidation links the two private caches on conflicting writes
 
-# 3. Baseline Stabiliization Run
+## 3. Baseline Stabiliization Run
 
 Purpose: confirm the baseline model and test harness are stable before attempting any edits.
 
@@ -58,7 +60,7 @@ Files to inspect on failure:
 - `obj_dir/Vtb_week11.h` and generated simulator artifacts (only for deeper investigation)
 
 
-# 4. Case B: First Failing Scenario
+## 4. Case B: First Failing Scenario
 
 Target: `make run-case-b` builds with `-GLAB_VARIANT=1` and runs the directed trace.
 
@@ -88,7 +90,7 @@ Relevant locations:
 - `rtl/tb_week11.sv` — directed sequence labels and the `do_single`/`do_dual` helpers that record expected values.
 
 
-# 5. Case C: Address Contract Failure
+## 5. Case C: Address Contract Failure
 
 Target: `make run-case-c` builds with `-GLAB_VARIANT=2` and replays `traces/address_alias.trace`.
 
@@ -122,7 +124,7 @@ Relevant locations:
 - `traces/address_alias.trace` — concrete trace steps that reproduce the aliasing scenario.
 
 
-# 6. Case D: Same Cycle Interaction
+## 6. Case D: Same Cycle Interaction
 
 Target: `make run-case-d` builds with `-GLAB_VARIANT=3` and replays `traces/simultaneous_race.trace`.
 
@@ -151,7 +153,7 @@ Relevant locations:
 - `traces/simultaneous_race.trace` — the canonical race trace.
 
 
-# 7. Write One New Trace
+## 7. Write One New Trace
 
 Trace format: text lines parsed by the testbench via `$sscanf` in `rtl/tb_week11.sv`. Each non-comment line has four fields: `OP CORE ADDR DATA` where `OP` is `R` or `W` (or `D` for a hardcoded simultaneous dual op used by the harness).
 
@@ -181,7 +183,7 @@ $ make run-raw-trace
 Notes: the `trace_replay` task in `rtl/tb_week11.sv` gracefully falls back to the directed default if it cannot open the trace file.
 
 
-# 8. Exercise F: Assertions
+## 8. Exercise F: Assertions
 
 | No | Assertion goal |
 |---|---|
@@ -193,7 +195,7 @@ Notes: the `trace_replay` task in `rtl/tb_week11.sv` gracefully falls back to th
 
 Where to place it: add the selected check near the end of `rtl/two_core_cache_system.sv`.
 
-# 9. Takeaway
+## 9. Takeaway
 
 - **Testing**: asks whether examples behave as expected
 - **Verification**: asks whether properties remain true across many behaviors
