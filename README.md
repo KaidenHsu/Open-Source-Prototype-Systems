@@ -8,7 +8,7 @@ course projects for "Open Source Prototype Systems and Applications (2026 Spring
 --------|:-----
 [Project 1][1-1]| RV32I Single-Cycle Baseline Processor
 [Project 2-1][1-2]| RV32I Pipelined Processor with Cache Subsystem
-[Project 2-2][1-3]| Gem5 Histogram Workload Profiling
+[Project 2-2][1-3]| Gem5: Histogram Binning Workload
 
 [1-1]: projects/project1/
 [1-2]: projects/project2_1/
