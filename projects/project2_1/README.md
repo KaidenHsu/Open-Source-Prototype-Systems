@@ -28,9 +28,8 @@ The datapath implements a subset of the **RV32I** base instruction set:
 - 4 words per line
 - blocking (no MLP)
 - read-allocate
-- d-$
-  - write-allocate
-  - write-back
+- write-allocate (d$)
+- write-back (d$)
 
 ### 3.1. Cache Timing Diagram
 
