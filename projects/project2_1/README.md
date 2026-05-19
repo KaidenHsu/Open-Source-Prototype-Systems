@@ -23,7 +23,14 @@ The datapath implements a subset of the **RV32I** base instruction set:
 
 <p align="center"><img src="images/memory_hierarchy.jpg" alt="memory hierarchy" width="720" /></p>
 
-The memory hierarchy leverages a **Harvard architecture** with separate instruction and data caches. Both caches feature a **capacity of 4 lines** with **4 words per line**. Both caches are **direct-mapped** and **read allocate**, while the data cache specifically utilizes **write allocate** and **write-back** policies. Additionally, both implement a **blocking cache** architecture.
+- Harvard architecture
+- direct-mapped (set associativity = 1)
+- 4 words per line
+- blocking (no MLP)
+- read-allocate
+- d-$
+  - write-allocate
+  - write-back
 
 ### 3.1. Cache Timing Diagram
 
@@ -56,5 +63,5 @@ $ ./run.sh
 
 ## 5. Known Limitations
 
-* **Backing RAM Bandwidth:** While a **128-bit** memory bus simplifies implementation, it causes severe routing congestion in physical logic. A practical physical design would narrow this data interface and serialize the cache-line fetch using **DRAM burst reads**.
-* **Critical Path Timing:** The current cache miss path—where data flows from the backing RAM, through the cache controller, and directly into the CPU within a single cycle—will most definitely trigger a **timing violation**, which requires further pipelining to meet practical frequency targets.
+- **Backing RAM Bandwidth:** While a **128-bit** memory bus simplifies implementation, it causes severe routing congestion in physical logic. A practical physical design would narrow this data interface and serialize the cache-line fetch using **DRAM burst reads**.
+- **Critical Path Timing:** The current cache miss path—where data flows from the backing RAM, through the cache controller, and directly into the CPU within a single cycle—will most definitely trigger a **timing violation**, which requires further pipelining to meet practical frequency targets.
