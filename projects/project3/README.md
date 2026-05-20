@@ -16,15 +16,13 @@ $ ./run.sh
 - direct-mapped, 4 words/line
 
 <p align="center"><img src="images/top.jpg" alt="top" /></p>
-<p align="center"><img src="images/FSM_cache_controller.jpg" alt="cache controller" /></p>
+<p align="center"><img src="images/FSM_cache_controller.jpg" alt="cache controller" width=720 /></p>
 <p align="center">
     <img src="./images/core_state_diagram.png" alt="core" align="middle" />
     <img src="./images/bus_state_diagram.png" alt="bus" align="middle" />
 </p>
-<p align="center">
-    <img src="./images/FSM_MSI_core.jpg" alt="core" align="middle" />
-    <img src="./images/FSM_MSI_bus.jpg" alt="bus" align="middle" />
-</p>
+<p align="center"> <img src="./images/FSM_MSI_core.jpg" alt="core" align="middle" width=720 /> </p>
+<p align="center"> <img src="./images/FSM_MSI_bus.jpg" alt="bus" align="middle" width=720 /> </p>
 
 
 ## 3. Workload variants
