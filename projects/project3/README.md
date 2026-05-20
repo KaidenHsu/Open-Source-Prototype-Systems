@@ -15,7 +15,7 @@ $ ./run.sh
 - blocking
 - direct-mapped, 4 words/line
 
-<p align="center"><img src="images/top.jpg" alt="top" /></p>
+<p align="center"><img src="images/top.jpg" alt="top" width=960 /></p>
 <p align="center"><img src="images/FSM_cache_controller.jpg" alt="cache controller" width=720 /></p>
 <p align="center">
     <img src="./images/core_state_diagram.png" alt="core" align="middle" />
