@@ -50,6 +50,7 @@ The address is a word address, not a byte address. With four-word cache lines, a
 
 
 | core0 / core1 | `shared_bins` | `false_sharing` | `padded_bins` | `local_bins` |
+|---|---|---|---|---|
 | request 1 | 00 / 00 | 00 / 01 | 00 / 04 | 10 / 20 |
 | request 2 | 01 / 01 | 00 / 01 | 00 / 04 | 11 / 21 |
 | request 3 | 02 / 02 | 00 / 01 | 00 / 04 | 12 / 22 |
