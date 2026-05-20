@@ -14,7 +14,7 @@ $ ./run.sh
 - write-back
 - blocking
 - direct-mapped, 4 words/line
-- requires a final flush before inspecting the correctness of memory locations
+- requires a final flush before the final memory state inspection
 
 <p align="center"><img src="images/top.jpg" alt="top" width=960 /></p>
 <p align="center"><img src="images/FSM_cache_controller.jpg" alt="cache controller" width=720 /></p>
