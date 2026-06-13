@@ -1,0 +1,27 @@
+warn: The se.py script is deprecated. It will be removed in future releases of  gem5.
+Global frequency set at 1000000000000 ticks per second
+src/mem/dram_interface.cc:690: warn: DRAM device capacity (8192 Mbytes) does not match the address range assigned (512 Mbytes)
+src/arch/riscv/isa.cc:321: info: RVV enabled, VLEN = 256 bits, ELEN = 64 bits
+src/base/statistics.hh:279: warn: One of the stats is a legacy stat. Legacy stat is a stat that does not belong to any statistics::Group. Legacy stat is deprecated.
+system.remote_gdb: Listening for connections on port 7000
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 25.1.0.0
+gem5 compiled Jun 12 2026 17:37:49
+gem5 started Jun 13 2026 03:26:39
+gem5 executing on 9a0ebd2b8a78, pid 711758
+command line: /opt/gem5/build/RISCV/gem5.opt --outdir=results/conv2d_scalar /opt/gem5/configs/deprecated/example/se.py --cmd=build/conv2d_scalar.riscv
+
+**** REAL SIMULATION ****
+src/sim/syscall_emul.cc:97: warn: ignoring syscall set_robust_list(...)
+      (further warnings will be suppressed)
+src/sim/mem_state.cc:443: info: Increasing stack size by one page.
+src/sim/syscall_emul.cc:86: warn: ignoring syscall mprotect(...)
+Exiting @ tick 85392500 because exiting with last active thread context
+Selected gem5 statistics:
+simInsts                                       131132                       # Number of instructions simulated (Count)
+hostSeconds                                      0.06                       # Real time elapsed on the host (Second)
+simSeconds                                   0.000085                       # Number of seconds simulated (Second)
+system.cpu.ipc                               0.767815                       # IPC: instructions per cycle (core level) ((Count/Cycle))
+system.cpu.cpi                               1.302398                       # CPI: cycles per instruction (core level) ((Cycle/Count))

@@ -1,0 +1,2 @@
+PASS: RISC-V-controlled convolution accelerator produced expected outputs
+- rtl/tb_project4.sv:29: Verilog $finish

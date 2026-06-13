@@ -1,0 +1,244 @@
+# RISC-V machine code: test program for a 3x3 convolution hardware accelerator
+#
+# Memory-mapped I/O layout (base address = 0x80000000, held in a0):
+#   a0 + 0x00: start register    (write 1 to trigger one convolution)
+#   a0 + 0x04: done register     (reads 1 when accelerator has finished)
+#   a0 + 0x08: result register   (output: dot product of pixel window and kernel)
+#   a0 + 0x10..0x30: 3x3 input pixel window, 9 x 32-bit words, row-major order
+#   a0 + 0x40..0x60: 3x3 convolution kernel,  9 x 32-bit words, row-major order
+#
+# Register usage (bare-metal; ABI conventions not followed):
+#   a0  (x10) = MMIO base address 0x80000000
+#   a1  (x11) = constant 1, used as the "done" comparand in the polling branch
+#   x1  (ra)  = scratch: holds immediate values before storing to MMIO
+#   x2  (sp)  = scratch: receives the done-flag value during polling
+#   x3  (gp)  = scratch: receives the result value after each convolution
+#
+# Four test cases are run in sequence; results go to absolute addresses 0, 4, 8, 12.
+
+# --- One-time initialization ---
+80000537  # lui  a0, 0x80000    → a0 = 0x80000000  (MMIO base address)
+00100593  # addi a1, x0, 1     → a1 = 1            (constant used in polling branch)
+
+# ============================================================
+# TEST 1
+#   Pixel window (row-major):  [1, 2, 3 / 4, 5, 6 / 7, 8, 9]
+#   Kernel (Prewitt vertical): [1, 0,-1 / 1, 0,-1 / 1, 0,-1]
+#   Expected result (dot product): 1-3+4-6+7-9 = -6
+# ============================================================
+
+# -- Write pixel window into accelerator registers (a0 + 0x10 .. 0x30) --
+00100093  # addi x1, x0, 1
+00152823  # sw   x1, 16(a0)    → pixel[0][0] = 1
+00200093  # addi x1, x0, 2
+00152a23  # sw   x1, 20(a0)    → pixel[0][1] = 2
+00300093  # addi x1, x0, 3
+00152c23  # sw   x1, 24(a0)    → pixel[0][2] = 3
+00400093  # addi x1, x0, 4
+00152e23  # sw   x1, 28(a0)    → pixel[1][0] = 4
+00500093  # addi x1, x0, 5
+02152023  # sw   x1, 32(a0)    → pixel[1][1] = 5
+00600093  # addi x1, x0, 6
+02152223  # sw   x1, 36(a0)    → pixel[1][2] = 6
+00700093  # addi x1, x0, 7
+02152423  # sw   x1, 40(a0)    → pixel[2][0] = 7
+00800093  # addi x1, x0, 8
+02152623  # sw   x1, 44(a0)    → pixel[2][1] = 8
+00900093  # addi x1, x0, 9
+02152823  # sw   x1, 48(a0)    → pixel[2][2] = 9
+
+# -- Write Prewitt vertical-edge kernel into accelerator registers (a0 + 0x40 .. 0x60) --
+00100093  # addi x1, x0,  1
+04152023  # sw   x1, 64(a0)    → kernel[0][0] =  1
+00000093  # addi x1, x0,  0
+04152223  # sw   x1, 68(a0)    → kernel[0][1] =  0
+fff00093  # addi x1, x0, -1
+04152423  # sw   x1, 72(a0)    → kernel[0][2] = -1
+00100093  # addi x1, x0,  1
+04152623  # sw   x1, 76(a0)    → kernel[1][0] =  1
+00000093  # addi x1, x0,  0
+04152823  # sw   x1, 80(a0)    → kernel[1][1] =  0
+fff00093  # addi x1, x0, -1
+04152a23  # sw   x1, 84(a0)    → kernel[1][2] = -1
+00100093  # addi x1, x0,  1
+04152c23  # sw   x1, 88(a0)    → kernel[2][0] =  1
+00000093  # addi x1, x0,  0
+04152e23  # sw   x1, 92(a0)    → kernel[2][1] =  0
+fff00093  # addi x1, x0, -1
+06152023  # sw   x1, 96(a0)    → kernel[2][2] = -1
+
+# -- Trigger, poll, read, and save result --
+00100093  # addi x1, x0, 1
+00152023  # sw   x1,  0(a0)    → write 1 to start register (kick off computation)
+00452103  # lw   x2,  4(a0)    → read done register into x2
+feb11ee3  # bne  x2, a1, -4   → if x2 ≠ 1 (not done), branch back to lw (polling loop)
+00852183  # lw   x3,  8(a0)    → read result register into x3
+00302023  # sw   x3,  0(x0)    → store result #1 at absolute address 0x00
+
+# ============================================================
+# TEST 2
+#   Pixel window (row-major):    [9, 8, 7 / 6, 5, 4 / 3, 2, 1]
+#   Kernel (Prewitt horizontal): [1, 1, 1 / 0, 0, 0 /-1,-1,-1]
+#   Expected result: 9+8+7+0+0+0-3-2-1 = 18
+# ============================================================
+
+# -- Write pixel window --
+00900093  # addi x1, x0, 9
+00152823  # sw   x1, 16(a0)    → pixel[0][0] = 9
+00800093  # addi x1, x0, 8
+00152a23  # sw   x1, 20(a0)    → pixel[0][1] = 8
+00700093  # addi x1, x0, 7
+00152c23  # sw   x1, 24(a0)    → pixel[0][2] = 7
+00600093  # addi x1, x0, 6
+00152e23  # sw   x1, 28(a0)    → pixel[1][0] = 6
+00500093  # addi x1, x0, 5
+02152023  # sw   x1, 32(a0)    → pixel[1][1] = 5
+00400093  # addi x1, x0, 4
+02152223  # sw   x1, 36(a0)    → pixel[1][2] = 4
+00300093  # addi x1, x0, 3
+02152423  # sw   x1, 40(a0)    → pixel[2][0] = 3
+00200093  # addi x1, x0, 2
+02152623  # sw   x1, 44(a0)    → pixel[2][1] = 2
+00100093  # addi x1, x0, 1
+02152823  # sw   x1, 48(a0)    → pixel[2][2] = 1
+
+# -- Write Prewitt horizontal-edge kernel --
+00100093  # addi x1, x0,  1
+04152023  # sw   x1, 64(a0)    → kernel[0][0] =  1
+00100093  # addi x1, x0,  1
+04152223  # sw   x1, 68(a0)    → kernel[0][1] =  1
+00100093  # addi x1, x0,  1
+04152423  # sw   x1, 72(a0)    → kernel[0][2] =  1
+00000093  # addi x1, x0,  0
+04152623  # sw   x1, 76(a0)    → kernel[1][0] =  0
+00000093  # addi x1, x0,  0
+04152823  # sw   x1, 80(a0)    → kernel[1][1] =  0
+00000093  # addi x1, x0,  0
+04152a23  # sw   x1, 84(a0)    → kernel[1][2] =  0
+fff00093  # addi x1, x0, -1
+04152c23  # sw   x1, 88(a0)    → kernel[2][0] = -1
+fff00093  # addi x1, x0, -1
+04152e23  # sw   x1, 92(a0)    → kernel[2][1] = -1
+fff00093  # addi x1, x0, -1
+06152023  # sw   x1, 96(a0)    → kernel[2][2] = -1
+
+# -- Trigger, poll, read, and save result --
+00100093  # addi x1, x0, 1
+00152023  # sw   x1,  0(a0)    → write 1 to start register
+00452103  # lw   x2,  4(a0)    → read done register into x2
+feb11ee3  # bne  x2, a1, -4   → loop back while done ≠ 1 (polling loop)
+00852183  # lw   x3,  8(a0)    → read result into x3
+00302223  # sw   x3,  4(x0)    → store result #2 at absolute address 0x04
+
+# ============================================================
+# TEST 3
+#   Pixel window (row-major): [ 2, 4, 6 / 8,10,12 /14,16,18]
+#   Kernel (Laplacian):       [ 0, 1, 0 / 1,-4, 1 / 0, 1, 0]
+#   Expected result: 0+4+0+8+(-40)+12+0+16+0 = 0
+# ============================================================
+
+# -- Write pixel window --
+00200093  # addi x1, x0,  2
+00152823  # sw   x1, 16(a0)    → pixel[0][0] =  2
+00400093  # addi x1, x0,  4
+00152a23  # sw   x1, 20(a0)    → pixel[0][1] =  4
+00600093  # addi x1, x0,  6
+00152c23  # sw   x1, 24(a0)    → pixel[0][2] =  6
+00800093  # addi x1, x0,  8
+00152e23  # sw   x1, 28(a0)    → pixel[1][0] =  8
+00a00093  # addi x1, x0, 10
+02152023  # sw   x1, 32(a0)    → pixel[1][1] = 10
+00c00093  # addi x1, x0, 12
+02152223  # sw   x1, 36(a0)    → pixel[1][2] = 12
+00e00093  # addi x1, x0, 14
+02152423  # sw   x1, 40(a0)    → pixel[2][0] = 14
+01000093  # addi x1, x0, 16
+02152623  # sw   x1, 44(a0)    → pixel[2][1] = 16
+01200093  # addi x1, x0, 18
+02152823  # sw   x1, 48(a0)    → pixel[2][2] = 18
+
+# -- Write Laplacian kernel --
+00000093  # addi x1, x0,  0
+04152023  # sw   x1, 64(a0)    → kernel[0][0] =  0
+00100093  # addi x1, x0,  1
+04152223  # sw   x1, 68(a0)    → kernel[0][1] =  1
+00000093  # addi x1, x0,  0
+04152423  # sw   x1, 72(a0)    → kernel[0][2] =  0
+00100093  # addi x1, x0,  1
+04152623  # sw   x1, 76(a0)    → kernel[1][0] =  1
+ffc00093  # addi x1, x0, -4
+04152823  # sw   x1, 80(a0)    → kernel[1][1] = -4
+00100093  # addi x1, x0,  1
+04152a23  # sw   x1, 84(a0)    → kernel[1][2] =  1
+00000093  # addi x1, x0,  0
+04152c23  # sw   x1, 88(a0)    → kernel[2][0] =  0
+00100093  # addi x1, x0,  1
+04152e23  # sw   x1, 92(a0)    → kernel[2][1] =  1
+00000093  # addi x1, x0,  0
+06152023  # sw   x1, 96(a0)    → kernel[2][2] =  0
+
+# -- Trigger, poll, read, and save result --
+00100093  # addi x1, x0, 1
+00152023  # sw   x1,  0(a0)    → write 1 to start register
+00452103  # lw   x2,  4(a0)    → read done register into x2
+feb11ee3  # bne  x2, a1, -4   → loop back while done ≠ 1 (polling loop)
+00852183  # lw   x3,  8(a0)    → read result into x3
+00302423  # sw   x3,  8(x0)    → store result #3 at absolute address 0x08
+
+# ============================================================
+# TEST 4
+#   Pixel window: all 5s  [5,5,5 / 5,5,5 / 5,5,5]
+#   Kernel (box/mean):    all 1s  [1,1,1 / 1,1,1 / 1,1,1]
+#   Expected result: 9 x 5 x 1 = 45
+# ============================================================
+
+# -- Write pixel window (all 5s) --
+00500093  # addi x1, x0, 5
+00152823  # sw   x1, 16(a0)    → pixel[0][0] = 5
+00500093  # addi x1, x0, 5
+00152a23  # sw   x1, 20(a0)    → pixel[0][1] = 5
+00500093  # addi x1, x0, 5
+00152c23  # sw   x1, 24(a0)    → pixel[0][2] = 5
+00500093  # addi x1, x0, 5
+00152e23  # sw   x1, 28(a0)    → pixel[1][0] = 5
+00500093  # addi x1, x0, 5
+02152023  # sw   x1, 32(a0)    → pixel[1][1] = 5
+00500093  # addi x1, x0, 5
+02152223  # sw   x1, 36(a0)    → pixel[1][2] = 5
+00500093  # addi x1, x0, 5
+02152423  # sw   x1, 40(a0)    → pixel[2][0] = 5
+00500093  # addi x1, x0, 5
+02152623  # sw   x1, 44(a0)    → pixel[2][1] = 5
+00500093  # addi x1, x0, 5
+02152823  # sw   x1, 48(a0)    → pixel[2][2] = 5
+
+# -- Write box kernel (all 1s) --
+00100093  # addi x1, x0, 1
+04152023  # sw   x1, 64(a0)    → kernel[0][0] = 1
+00100093  # addi x1, x0, 1
+04152223  # sw   x1, 68(a0)    → kernel[0][1] = 1
+00100093  # addi x1, x0, 1
+04152423  # sw   x1, 72(a0)    → kernel[0][2] = 1
+00100093  # addi x1, x0, 1
+04152623  # sw   x1, 76(a0)    → kernel[1][0] = 1
+00100093  # addi x1, x0, 1
+04152823  # sw   x1, 80(a0)    → kernel[1][1] = 1
+00100093  # addi x1, x0, 1
+04152a23  # sw   x1, 84(a0)    → kernel[1][2] = 1
+00100093  # addi x1, x0, 1
+04152c23  # sw   x1, 88(a0)    → kernel[2][0] = 1
+00100093  # addi x1, x0, 1
+04152e23  # sw   x1, 92(a0)    → kernel[2][1] = 1
+00100093  # addi x1, x0, 1
+06152023  # sw   x1, 96(a0)    → kernel[2][2] = 1
+
+# -- Trigger, poll, read, and save result --
+00100093  # addi x1, x0, 1
+00152023  # sw   x1,  0(a0)    → write 1 to start register
+00452103  # lw   x2,  4(a0)    → read done register into x2
+feb11ee3  # bne  x2, a1, -4   → loop back while done ≠ 1 (polling loop)
+00852183  # lw   x3,  8(a0)    → read result into x3
+00302623  # sw   x3, 12(x0)    → store result #4 at absolute address 0x0C
+
+# --- End of program ---
+00100073  # ebreak             → halt (environment breakpoint; ends simulation)

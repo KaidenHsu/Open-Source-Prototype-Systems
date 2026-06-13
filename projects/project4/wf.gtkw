@@ -1,0 +1,91 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Jun 13 16:07:43 2026
+[*]
+[dumpfile] "/mnt/c/Users/ryanh/Documents/Courses/1-2/OpenSourcePrototypeSystemsAndApplications/projects/p4/project4.vcd"
+[dumpfile_mtime] "Sat Jun 13 15:04:15 2026"
+[dumpfile_size] 123995
+[savefile] "/mnt/c/Users/ryanh/Documents/Courses/1-2/OpenSourcePrototypeSystemsAndApplications/projects/p4/wf.gtkw"
+[timestart] 0
+[size] 3840 2113
+[pos] -1 -1
+*-5.009164 228 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_project4.
+[treeopen] TOP.tb_project4.dut.
+[sst_width] 297
+[signals_width] 298
+[sst_expanded] 1
+[sst_vpaned_height] 683
+@28
+TOP.tb_project4.dut.accel.clk
+TOP.tb_project4.dut.accel.reset
+@200
+-
+@22
+[color] 2
+TOP.tb_project4.dut.accel.ctrl[31:0]
+@28
+[color] 2
+TOP.tb_project4.dut.accel.valid
+[color] 2
+TOP.tb_project4.dut.accel.write
+@22
+[color] 3
+TOP.tb_project4.dut.accel.addr[7:0]
+@24
+[color] 3
+TOP.tb_project4.dut.accel.offset[5:0]
+[color] 3
+TOP.tb_project4.dut.accel.row[1:0]
+[color] 3
+TOP.tb_project4.dut.accel.col[1:0]
+@420
+[color] 2
+TOP.tb_project4.dut.accel.wdata[31:0]
+@200
+-
+@22
+TOP.tb_project4.dut.accel.coefficients[0][0][7:0]
+TOP.tb_project4.dut.accel.coefficients[0][1][7:0]
+TOP.tb_project4.dut.accel.coefficients[0][2][7:0]
+TOP.tb_project4.dut.accel.coefficients[1][0][7:0]
+TOP.tb_project4.dut.accel.coefficients[1][1][7:0]
+TOP.tb_project4.dut.accel.coefficients[1][2][7:0]
+TOP.tb_project4.dut.accel.coefficients[2][0][7:0]
+TOP.tb_project4.dut.accel.coefficients[2][1][7:0]
+TOP.tb_project4.dut.accel.coefficients[2][2][7:0]
+TOP.tb_project4.dut.accel.pixels[0][0][7:0]
+TOP.tb_project4.dut.accel.pixels[0][1][7:0]
+TOP.tb_project4.dut.accel.pixels[0][2][7:0]
+TOP.tb_project4.dut.accel.pixels[1][0][7:0]
+TOP.tb_project4.dut.accel.pixels[1][1][7:0]
+TOP.tb_project4.dut.accel.pixels[1][2][7:0]
+TOP.tb_project4.dut.accel.pixels[2][0][7:0]
+TOP.tb_project4.dut.accel.pixels[2][1][7:0]
+TOP.tb_project4.dut.accel.pixels[2][2][7:0]
+@200
+-
+@22
+[color] 2
+TOP.tb_project4.dut.accel.result_comb[31:0]
+[color] 2
+TOP.tb_project4.dut.accel.result[31:0]
+@200
+-
+@22
+[color] 2
+TOP.tb_project4.dut.accel.rdata[31:0]
+[color] 2
+TOP.tb_project4.dut.accel.status[31:0]
+@200
+-
+@24
+[color] 7
+TOP.tb_project4.dut.accel.state[1:0]
+[color] 7
+TOP.tb_project4.dut.accel.n_state[1:0]
+@25
+TOP.tb_project4.dut.accel.latency[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

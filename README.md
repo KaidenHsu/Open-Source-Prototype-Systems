@@ -10,11 +10,13 @@ course projects for "Open Source Prototype Systems and Applications (2026 Spring
 [Project 2-1][1-2]| RV32I Pipelined Processor with Cache Subsystem
 [Project 2-2][1-3]| Gem5: Histogram Binning Workload
 [Project 3][1-4]| Two-Core MSI-Coherent Parallel Histogram
+[Project 4][1-5]| 2D Convolution Acceleration and Gem5 Custom Instruction Simulation
 
 [1-1]: projects/project1/
 [1-2]: projects/project2_1/
 [1-3]: projects/project2_2/
 [1-4]: projects/project3/
+[1-5]: projects/project4/
 
 ## Labs
 
