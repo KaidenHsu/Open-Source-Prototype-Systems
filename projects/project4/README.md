@@ -1,4 +1,4 @@
-# Project 4. 2D Convolution Acceleration and Gem5 Custom Instruction Addition
+# Project 4. 2D Convolution Acceleration and Gem5 Custom Instruction Simulation
 
 ## 1. Introdcution
 
