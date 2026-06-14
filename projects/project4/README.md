@@ -1,4 +1,4 @@
-# Project 4. 2D Convolution Acceleration and Gem5 Custom Instruction Simulation
+# Project 4. 2D Convolution Acceleration and Gem5 Custom Instruction Addition
 
 ## 1. Introdcution
 
@@ -13,8 +13,11 @@ A RISC-V-controlled system that drives a memory-mapped convolution accelerator i
 ```bash
 $ bash run_accel.sh
 ```
+### 2.2 System Architecture
 
-### 2.2 `conv_accel.sv`'s Behavior
+<p align="center"><img src="images/project4_top.jpg" alt="project4_top"/></p>
+
+### 2.3 `conv_accel.sv`'s Behavior
 
 - accept MMIO writes for 9 pixels and 9 kernel coefficients
 - accept `CTRL[0] = start`
@@ -22,7 +25,7 @@ $ bash run_accel.sh
 - expose `STATUS[0] = done`, `STATUS[1] = busy`
 - return signed 32-bit result at `RESULT`
 
-### 2.3 Accelerator Register Map
+### 2.4 Accelerator Register Map
 
 | Offset    | Register        | Direction | Meaning                                      |
 |-----------|-----------------|-----------|----------------------------------------------|
@@ -32,13 +35,13 @@ $ bash run_accel.sh
 | 0x10–0x30 | PIXEL0–PIXEL8   | Write     | unsigned 8-bit input window values in wdata[7:0]  |
 | 0x40–0x60 | KERNEL0–KERNEL8 | Write     | signed 8-bit kernel coefficients in wdata[7:0]    |
 
-### 2.4 Design Discussion
+### 2.5 Design Discussion
 
 - This design assumes coherent accelerator design. To relieve interconnect traffic, non-coherent design and fence are required.
 - This design kernel uses combinational convolution circuit, pipeline this critical path to fit your timing requirements.
 - This design only asserts the `STATUS[0] = done` for exactly 1 cycle, which is fragile in a polling system in programming I/O. Use interrupts, two-way handshakes, extended done signals instead for a more reliable system.
 
-### 2.5 Verification
+### 2.6 Verification
 
 The testbench (`tb_project4.sv`) drives a single RISC-V program (`program_conv.hex`) that runs four back-to-back convolutions through the MMIO accelerator. After reset is released, the CPU writes pixel and kernel values, pulses `CTRL[0]=1`, polls `STATUS[0]` until done, reads `RESULT`, and stores it to data memory. When the program hits `ebreak`, the testbench reads `data_memory.mem_array[0..3]` and compares each against a golden value.
 
@@ -78,7 +81,7 @@ $ bash run_gem5.sh
 
 ### 3.2 System Under Simulation
 
-<p align="center"><img src="images/system_under_sim.svg" alt="SUS"/></p>
+<p align="center"><img src="images/system_under_sim.svg" alt="system under simulation"/></p>
 
 ### 3.3 Workload
 
@@ -189,7 +192,11 @@ uint32_t xdot4(uint32_t rs1, uint32_t rs2) {
     - overflow: to prevent overflow when MACing word-wide pairs, `acc` in `xdot4` is declared as `int32_t`.
     - Though `xdot4` encoding is 32-bit as per RV32IM, the compile flags are 64-bit (`-march=rv64imafd -mabi=lp64d`) to circumvent linkage errors as the system libraries are 64-bit wide. Some tricks have to be carried out in the app program to preserve correctness.
 
-- **Step 1**: modify `/opt/gem5/src/arch/riscv/isa/decoder.isa` (The exact gem5 decoder patch is version-dependent)
+``` bash
+$ riscv64-linux-gnu-gcc -O2 -static -march=rv64imafd -mabi=lp64d -o build/${BENCH}.riscv gem5/src/${BENCH}.c
+```
+
+- **Step 1**: Modify `/opt/gem5/src/arch/riscv/isa/decoder.isa` (The exact gem5 decoder patch is version-dependent).
 
 ``` cpp
 0x02: decode FUNCT3 {
@@ -206,13 +213,13 @@ uint32_t xdot4(uint32_t rs1, uint32_t rs2) {
     }
 }
 ```
-- **Step 2**: Rebuild Gem5
+- **Step 2**: Rebuild Gem5.
 
 ``` bash
 $ scons /opt/gem5build/RISCV/gem5.opt -j$(nproc)
 ```
 
-- **Step 3**: `xdot4` inline invocation in `gem5/src/conv2d_xdot4.c`
+- **Step 3**: `xdot4` inline invocation in `gem5/src/conv2d_xdot4.c`.
 
 ``` c
 static inline int xdot4(int packed_pixels, int packed_coeffs) {
@@ -307,4 +314,4 @@ Ans: The accelerator processes only one 3×3 window at a time with a single comb
 
 ## 5. Conclusion
 
-Building the MMIO accelerator in Task 1 revealed how much protocol overhead — nine pixel writes, nine kernel writes, a start pulse, and a polling loop — a host must pay just to launch a single 3×3 dot product; the compute itself is trivial compared with the handshake. Task 2 showed the opposite extreme: folding that same dot product into a single in-pipeline instruction eliminates all memory traffic, yet the packing code that feeds `xdot4` costs enough instructions that `conv2d_optimized` — pure scalar, no custom silicon — still matches its performance. Together, the two tasks mirror an architect's real workflow: the Gem5 simulation in Task 2 is the low-cost feasibility check that should precede the RTL commitment in Task 1 — and the marginal gap between `xdot4` and `conv2d_optimized` is exactly the kind of evidence that would make an architect reconsider building the custom silicon at all.
+Building the MMIO accelerator in **Task 1** revealed how much protocol overhead — nine pixel writes, nine kernel writes, a start pulse, and a polling loop — a host must pay just to launch a single 3×3 dot product; the unoptimized compute itself is trivial compared with the handshake, which can be improved by offloading data movement to DMA. **Task 2** showed the opposite extreme: folding that same dot product into a single in-pipeline instruction eliminates all memory traffic, yet the packing code that feeds `xdot4` costs enough instructions that `conv2d_optimized` — pure scalar, no custom silicon — still matches its performance. **Together**, the two tasks mirror an architect's real workflow: the Gem5 simulation in Task 2 is the low-cost feasibility check that should precede the RTL commitment in Task 1 — and the marginal gap between `xdot4` and `conv2d_optimized` is exactly the kind of evidence that would make an architect reconsider building the custom silicon at all.
