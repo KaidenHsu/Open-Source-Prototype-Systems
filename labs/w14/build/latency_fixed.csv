@@ -1,0 +1,11 @@
+design,case,candidate_hex,match,latency_cycles,debug_count
+fixed,exact_match,0x1122334455667788,1,8,0
+fixed,mismatch_byte0,0x1122334455667777,0,8,0
+fixed,mismatch_byte1,0x1122334455668888,0,8,0
+fixed,mismatch_byte3,0x11223344aa667788,0,8,0
+fixed,mismatch_byte7,0xee22334455667788,0,8,0
+fixed,random_0,0xac0ea305d922b047,0,8,0
+fixed,random_1,0x137eb7d8669d8c7e,0,8,0
+fixed,random_2,0x0aa707a7a7a8878b,0,8,0
+fixed,random_3,0x772c418d25001f87,0,8,0
+fixed,random_4,0x7e59d70683ee5508,0,8,0

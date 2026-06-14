@@ -3,3 +3,6 @@
 *.svg linguist-generated
 *.ini linguist-generated
 *.json linguist-generated
+*.vcd linguist-generated
+*.fst linguist-generated
+*.rpt linguist-generated

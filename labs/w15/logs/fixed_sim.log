@@ -1,0 +1,13 @@
+METRIC policy=0
+METRIC cycles=322
+METRIC issued0=32
+METRIC issued1=32
+METRIC completed0=32
+METRIC completed1=32
+METRIC grants0=32
+METRIC grants1=32
+METRIC max_wait0=4
+METRIC max_wait1=160
+PASS correctness
+NOTE fairness check disabled; inspect max_wait0 and max_wait1
+- tb/tb_shared_accel_arbiter.sv:271: Verilog $finish

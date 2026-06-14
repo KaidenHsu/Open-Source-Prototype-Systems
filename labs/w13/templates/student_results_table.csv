@@ -1,0 +1,4 @@
+config,sim_seconds,cycles,instructions,dcache_misses,dynamic_w,leakage_w,avg_power_w,energy_j,epi_j_per_inst,edp_j_s,main_explanation
+baseline,,,,,,,,,,,
+l1d_big,,,,,,,,,,,
+freq_fast,,,,,,,,,,,

@@ -1,0 +1,1362 @@
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2020  Claire Xenia Wolf <claire@yosyshq.com>         |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.33 (git sha1 2584903a060)
+
+
+-- Running command `read_verilog -sv rtl/shared_accel_arbiter.sv rtl/shared_accel_lane.sv rtl/shared_accel_top.sv; chparam -set ARB_POLICY 2 shared_accel_top; chparam -set LANE_LATENCY 4 shared_accel_top; chparam -set AGE_LIMIT 8 shared_accel_top; synth -top shared_accel_top; stat' --
+
+1. Executing Verilog-2005 frontend: rtl/shared_accel_arbiter.sv
+Parsing SystemVerilog input from `rtl/shared_accel_arbiter.sv' to AST representation.
+Generating RTLIL representation for module `\shared_accel_arbiter'.
+Successfully finished Verilog frontend.
+
+2. Executing Verilog-2005 frontend: rtl/shared_accel_lane.sv
+Parsing SystemVerilog input from `rtl/shared_accel_lane.sv' to AST representation.
+Generating RTLIL representation for module `\shared_accel_lane'.
+Successfully finished Verilog frontend.
+
+3. Executing Verilog-2005 frontend: rtl/shared_accel_top.sv
+Parsing SystemVerilog input from `rtl/shared_accel_top.sv' to AST representation.
+Generating RTLIL representation for module `\shared_accel_top'.
+Successfully finished Verilog frontend.
+Parameter \ARB_POLICY = 2
+
+4. Executing AST frontend in derive mode using pre-parsed AST for module `\shared_accel_top'.
+Parameter \ARB_POLICY = 2
+Generating RTLIL representation for module `$paramod\shared_accel_top\ARB_POLICY=32'00000000000000000000000000000010'.
+Parameter \LANE_LATENCY = 4
+
+5. Executing AST frontend in derive mode using pre-parsed AST for module `\shared_accel_top'.
+Parameter \LANE_LATENCY = 4
+Generating RTLIL representation for module `$paramod\shared_accel_top\LANE_LATENCY=32'00000000000000000000000000000100'.
+Parameter \AGE_LIMIT = 8
+
+6. Executing AST frontend in derive mode using pre-parsed AST for module `\shared_accel_top'.
+Parameter \AGE_LIMIT = 8
+Generating RTLIL representation for module `$paramod\shared_accel_top\AGE_LIMIT=32'00000000000000000000000000001000'.
+
+7. Executing SYNTH pass.
+
+7.1. Executing HIERARCHY pass (managing design hierarchy).
+
+7.1.1. Analyzing design hierarchy..
+Top module:  \shared_accel_top
+Used module:     \shared_accel_arbiter
+Used module:     \shared_accel_lane
+Parameter \TAG_W = 8
+Parameter \OPCODE_W = 4
+Parameter \LEN_W = 8
+Parameter \METRIC_W = 16
+Parameter \ARB_POLICY = 2
+Parameter \AGE_LIMIT = 8
+
+7.1.2. Executing AST frontend in derive mode using pre-parsed AST for module `\shared_accel_arbiter'.
+Parameter \TAG_W = 8
+Parameter \OPCODE_W = 4
+Parameter \LEN_W = 8
+Parameter \METRIC_W = 16
+Parameter \ARB_POLICY = 2
+Parameter \AGE_LIMIT = 8
+Generating RTLIL representation for module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Parameter \TAG_W = 8
+Parameter \OPCODE_W = 4
+Parameter \LEN_W = 8
+Parameter \RESULT_W = 32
+Parameter \LANE_LATENCY = 4
+
+7.1.3. Executing AST frontend in derive mode using pre-parsed AST for module `\shared_accel_lane'.
+Parameter \TAG_W = 8
+Parameter \OPCODE_W = 4
+Parameter \LEN_W = 8
+Parameter \RESULT_W = 32
+Parameter \LANE_LATENCY = 4
+Generating RTLIL representation for module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+
+7.1.4. Analyzing design hierarchy..
+Top module:  \shared_accel_top
+Used module:     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter
+Used module:     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane
+
+7.1.5. Analyzing design hierarchy..
+Top module:  \shared_accel_top
+Used module:     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter
+Used module:     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane
+Removing unused module `\shared_accel_lane'.
+Removing unused module `\shared_accel_arbiter'.
+Removed 2 unused modules.
+
+7.2. Executing PROC pass (convert processes to netlists).
+
+7.2.1. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 2 empty switches in `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+Cleaned up 2 empty switches.
+
+7.2.2. Executing PROC_RMDEAD pass (remove dead branches from decision trees).
+Marked 3 switch rules as full_case in process $proc$rtl/shared_accel_lane.sv:51$97 in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Marked 3 switch rules as full_case in process $proc$rtl/shared_accel_arbiter.sv:121$78 in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Marked 6 switch rules as full_case in process $proc$rtl/shared_accel_arbiter.sv:0$59 in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Removed a total of 0 dead cases.
+
+7.2.3. Executing PROC_PRUNE pass (remove redundant assignments in processes).
+Removed 3 redundant assignments.
+Promoted 18 assignments to connections.
+
+7.2.4. Executing PROC_INIT pass (extract init attributes).
+
+7.2.5. Executing PROC_ARST pass (detect async resets in processes).
+
+7.2.6. Executing PROC_ROM pass (convert switches to ROMs).
+Converted 0 switches.
+<suppressed ~17 debug messages>
+
+7.2.7. Executing PROC_MUX pass (convert decision trees to multiplexers).
+Creating decoders for process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+     1/28: $3\make_result$func$rtl/shared_accel_lane.sv:71$95.$result[31:0]$117
+     2/28: $3\make_result$func$rtl/shared_accel_lane.sv:71$95.base[31:0]$122
+     3/28: $3\make_result$func$rtl/shared_accel_lane.sv:71$95.len[7:0]$121
+     4/28: $3\make_result$func$rtl/shared_accel_lane.sv:71$95.opcode[3:0]$120
+     5/28: $3\make_result$func$rtl/shared_accel_lane.sv:71$95.tag[7:0]$119
+     6/28: $3\make_result$func$rtl/shared_accel_lane.sv:71$95.src[0:0]$118
+     7/28: $2\make_result$func$rtl/shared_accel_lane.sv:71$95.base[31:0]$115
+     8/28: $2\make_result$func$rtl/shared_accel_lane.sv:71$95.len[7:0]$114
+     9/28: $2\make_result$func$rtl/shared_accel_lane.sv:71$95.opcode[3:0]$113
+    10/28: $2\make_result$func$rtl/shared_accel_lane.sv:71$95.tag[7:0]$112
+    11/28: $2\make_result$func$rtl/shared_accel_lane.sv:71$95.src[0:0]$111
+    12/28: $2\make_result$func$rtl/shared_accel_lane.sv:71$95.$result[31:0]$110
+    13/28: $0\rsp_valid[0:0]
+    14/28: $1\make_result$func$rtl/shared_accel_lane.sv:71$95.base[31:0]$109
+    15/28: $1\make_result$func$rtl/shared_accel_lane.sv:71$95.len[7:0]$108
+    16/28: $1\make_result$func$rtl/shared_accel_lane.sv:71$95.opcode[3:0]$107
+    17/28: $1\make_result$func$rtl/shared_accel_lane.sv:71$95.tag[7:0]$106
+    18/28: $1\make_result$func$rtl/shared_accel_lane.sv:71$95.src[0:0]$105
+    19/28: $1\make_result$func$rtl/shared_accel_lane.sv:71$95.$result[31:0]$104
+    20/28: $0\saved_len[7:0]
+    21/28: $0\saved_opcode[3:0]
+    22/28: $0\saved_tag[7:0]
+    23/28: $0\saved_src[0:0]
+    24/28: $0\remaining[2:0]
+    25/28: $0\busy[0:0]
+    26/28: $0\rsp_result[31:0]
+    27/28: $0\rsp_tag[7:0]
+    28/28: $0\rsp_src[0:0]
+Creating decoders for process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+     1/7: $0\cur_wait1[15:0]
+     2/7: $0\cur_wait0[15:0]
+     3/7: $0\last_grant[0:0]
+     4/7: $0\max_wait1[15:0]
+     5/7: $0\max_wait0[15:0]
+     6/7: $0\grant_count1[15:0]
+     7/7: $0\grant_count0[15:0]
+Creating decoders for process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+     1/11: $8\grant1_sel[0:0]
+     2/11: $7\grant0_sel[0:0]
+     3/11: $7\grant1_sel[0:0]
+     4/11: $6\grant1_sel[0:0]
+     5/11: $6\grant0_sel[0:0]
+     6/11: $5\grant1_sel[0:0]
+     7/11: $5\grant0_sel[0:0]
+     8/11: $4\grant0_sel[0:0]
+     9/11: $4\grant1_sel[0:0]
+    10/11: $3\grant1_sel[0:0]
+    11/11: $3\grant0_sel[0:0]
+
+7.2.8. Executing PROC_DLATCH pass (convert process syncs to latches).
+No latch inferred for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\grant0_sel' from process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+No latch inferred for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\grant1_sel' from process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+No latch inferred for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\aged0' from process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+No latch inferred for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\aged1' from process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+
+7.2.9. Executing PROC_DFF pass (convert process syncs to FFs).
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\rsp_valid' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$480' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\rsp_src' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$481' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\rsp_tag' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$482' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\rsp_result' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$483' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\busy' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$484' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\remaining' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$485' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\saved_src' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$486' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\saved_tag' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$487' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\saved_opcode' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$488' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\saved_len' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$489' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\make_result$func$rtl/shared_accel_lane.sv:71$95.$result' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$490' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\make_result$func$rtl/shared_accel_lane.sv:71$95.src' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$491' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\make_result$func$rtl/shared_accel_lane.sv:71$95.tag' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$492' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\make_result$func$rtl/shared_accel_lane.sv:71$95.opcode' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$493' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\make_result$func$rtl/shared_accel_lane.sv:71$95.len' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$494' with positive edge clock.
+Creating register for signal `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.\make_result$func$rtl/shared_accel_lane.sv:71$95.base' using process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+  created $dff cell `$procdff$495' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\grant_count0' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$496' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\grant_count1' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$497' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\max_wait0' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$498' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\max_wait1' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$499' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\last_grant' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$500' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\cur_wait0' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$501' with positive edge clock.
+Creating register for signal `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.\cur_wait1' using process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+  created $dff cell `$procdff$502' with positive edge clock.
+
+7.2.10. Executing PROC_MEMWR pass (convert process memory writes to cells).
+
+7.2.11. Executing PROC_CLEAN pass (remove empty switches from decision trees).
+Found and cleaned up 4 empty switches in `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+Removing empty process `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$proc$rtl/shared_accel_lane.sv:51$97'.
+Found and cleaned up 7 empty switches in `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+Removing empty process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:121$78'.
+Found and cleaned up 6 empty switches in `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+Removing empty process `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$proc$rtl/shared_accel_arbiter.sv:0$59'.
+Cleaned up 17 empty switches.
+
+7.2.12. Executing OPT_EXPR pass (perform const folding).
+Optimizing module shared_accel_top.
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+<suppressed ~2 debug messages>
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+<suppressed ~4 debug messages>
+
+7.3. Executing OPT_EXPR pass (perform const folding).
+Optimizing module shared_accel_top.
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+
+7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module \shared_accel_top..
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Removed 42 unused cells and 242 unused wires.
+<suppressed ~49 debug messages>
+
+7.5. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane...
+Checking module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter...
+Checking module shared_accel_top...
+Found and reported 0 problems.
+
+7.6. Executing OPT pass (performing simple optimizations).
+
+7.6.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.6.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+<suppressed ~12 debug messages>
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 4 cells.
+
+7.6.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+      Replacing known input bits on port A of cell $procmux$293: \busy -> 1'1
+      Replacing known input bits on port A of cell $procmux$289: \busy -> 1'0
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+    dead port 1/2 on $mux $procmux$376.
+    dead port 1/2 on $mux $procmux$379.
+    dead port 1/2 on $mux $procmux$382.
+    dead port 1/2 on $mux $procmux$385.
+    dead port 1/2 on $mux $procmux$388.
+    dead port 1/2 on $mux $procmux$394.
+    dead port 1/2 on $mux $procmux$397.
+    dead port 1/2 on $mux $procmux$400.
+    dead port 1/2 on $mux $procmux$403.
+    dead port 1/2 on $mux $procmux$409.
+    dead port 1/2 on $mux $procmux$412.
+    dead port 1/2 on $mux $procmux$415.
+    dead port 1/2 on $mux $procmux$418.
+    dead port 1/2 on $mux $procmux$424.
+    dead port 1/2 on $mux $procmux$427.
+    dead port 1/2 on $mux $procmux$430.
+    dead port 1/2 on $mux $procmux$436.
+    dead port 1/2 on $mux $procmux$439.
+    dead port 1/2 on $mux $procmux$442.
+    dead port 1/2 on $mux $procmux$448.
+    dead port 1/2 on $mux $procmux$451.
+    dead port 1/2 on $mux $procmux$457.
+    dead port 1/2 on $mux $procmux$460.
+    dead port 1/2 on $mux $procmux$466.
+    dead port 1/2 on $mux $procmux$472.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 25 multiplexer ports.
+<suppressed ~23 debug messages>
+
+7.6.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.6.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.6.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.6.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 29 unused wires.
+<suppressed ~1 debug messages>
+
+7.6.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.6.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.6.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~23 debug messages>
+
+7.6.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.6.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.6.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.6.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.6.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.6.16. Finished OPT passes. (There is nothing left to do.)
+
+7.7. Executing FSM pass (extract and optimize FSM).
+
+7.7.1. Executing FSM_DETECT pass (finding FSMs in design).
+
+7.7.2. Executing FSM_EXTRACT pass (extracting FSM from design).
+
+7.7.3. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+7.7.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.7.5. Executing FSM_OPT pass (simple optimizations of FSMs).
+
+7.7.6. Executing FSM_RECODE pass (re-assigning FSM state encoding).
+
+7.7.7. Executing FSM_INFO pass (dumping all available information on FSM cells).
+
+7.7.8. Executing FSM_MAP pass (mapping FSMs to basic logic).
+
+7.8. Executing OPT pass (performing simple optimizations).
+
+7.8.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.8.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.8.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~23 debug messages>
+
+7.8.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.8.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.8.6. Executing OPT_DFF pass (perform DFF optimizations).
+Adding SRST signal on $procdff$489 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$249_Y, Q = \saved_len, rval = 8'00000000).
+Adding EN signal on $auto$ff.cc:266:slice$503 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = \cmd_len, Q = \saved_len).
+Adding SRST signal on $procdff$488 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$257_Y, Q = \saved_opcode, rval = 4'0000).
+Adding EN signal on $auto$ff.cc:266:slice$509 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = \cmd_opcode, Q = \saved_opcode).
+Adding SRST signal on $procdff$487 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$265_Y, Q = \saved_tag, rval = 8'00000000).
+Adding EN signal on $auto$ff.cc:266:slice$515 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = \cmd_tag, Q = \saved_tag).
+Adding SRST signal on $procdff$486 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$273_Y, Q = \saved_src, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$521 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = \cmd_src, Q = \saved_src).
+Adding SRST signal on $procdff$485 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$284_Y, Q = \remaining, rval = 3'000).
+Adding EN signal on $auto$ff.cc:266:slice$527 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$284_Y, Q = \remaining).
+Adding SRST signal on $procdff$484 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$295_Y, Q = \busy, rval = 1'0).
+Adding SRST signal on $procdff$483 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$304_Y, Q = \rsp_result, rval = 0).
+Adding EN signal on $auto$ff.cc:266:slice$536 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $xor$rtl/shared_accel_lane.sv:47$127_Y, Q = \rsp_result).
+Adding SRST signal on $procdff$482 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$313_Y, Q = \rsp_tag, rval = 8'00000000).
+Adding EN signal on $auto$ff.cc:266:slice$540 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = \saved_tag, Q = \rsp_tag).
+Adding SRST signal on $procdff$481 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$322_Y, Q = \rsp_src, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$544 ($sdff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = \saved_src, Q = \rsp_src).
+Adding SRST signal on $procdff$480 ($dff) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane (D = $procmux$221_Y, Q = \rsp_valid, rval = 1'0).
+Adding SRST signal on $procdff$502 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $add$rtl/shared_accel_arbiter.sv:150$91_Y, Q = \cur_wait1, rval = 16'0000000000000000).
+Adding SRST signal on $procdff$501 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $add$rtl/shared_accel_arbiter.sv:141$85_Y, Q = \cur_wait0, rval = 16'0000000000000000).
+Adding SRST signal on $procdff$500 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $procmux$341_Y, Q = \last_grant, rval = 1'0).
+Adding EN signal on $auto$ff.cc:266:slice$563 ($sdff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $procmux$341_Y, Q = \last_grant).
+Adding SRST signal on $procdff$499 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $procmux$349_Y, Q = \max_wait1, rval = 16'0000000000000000).
+Adding EN signal on $auto$ff.cc:266:slice$567 ($sdff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $add$rtl/shared_accel_arbiter.sv:150$91_Y, Q = \max_wait1).
+Adding SRST signal on $procdff$498 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $procmux$357_Y, Q = \max_wait0, rval = 16'0000000000000000).
+Adding EN signal on $auto$ff.cc:266:slice$571 ($sdff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $add$rtl/shared_accel_arbiter.sv:141$85_Y, Q = \max_wait0).
+Adding SRST signal on $procdff$497 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $procmux$362_Y, Q = \grant_count1, rval = 16'0000000000000000).
+Adding EN signal on $auto$ff.cc:266:slice$575 ($sdff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $add$rtl/shared_accel_arbiter.sv:137$82_Y, Q = \grant_count1).
+Adding SRST signal on $procdff$496 ($dff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $procmux$367_Y, Q = \grant_count0, rval = 16'0000000000000000).
+Adding EN signal on $auto$ff.cc:266:slice$577 ($sdff) from module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter (D = $add$rtl/shared_accel_arbiter.sv:133$80_Y, Q = \grant_count0).
+
+7.8.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 40 unused cells and 40 unused wires.
+<suppressed ~42 debug messages>
+
+7.8.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+<suppressed ~1 debug messages>
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+<suppressed ~1 debug messages>
+Optimizing module shared_accel_top.
+
+7.8.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.8.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.8.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.8.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+<suppressed ~27 debug messages>
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 9 cells.
+
+7.8.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.8.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 9 unused wires.
+<suppressed ~1 debug messages>
+
+7.8.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.8.16. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.8.17. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.8.18. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.8.19. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.8.20. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.8.21. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.8.22. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.8.23. Finished OPT passes. (There is nothing left to do.)
+
+7.9. Executing WREDUCE pass (reducing word size of cells).
+Removed top 2 bits (of 32) from mux cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$ternary$rtl/shared_accel_lane.sv:46$123 ($mux).
+Removed top 2 bits (of 32) from port A of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$124 ($xor).
+Removed top 24 bits (of 32) from port B of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$124 ($xor).
+Removed top 2 bits (of 32) from port Y of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$124 ($xor).
+Removed top 2 bits (of 32) from port A of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$126 ($xor).
+Removed top 24 bits (of 32) from port B of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$126 ($xor).
+Removed top 2 bits (of 32) from port Y of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$126 ($xor).
+Removed top 2 bits (of 32) from port A of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$127 ($xor).
+Removed top 24 bits (of 32) from port B of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$127 ($xor).
+Removed top 2 bits (of 32) from port Y of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$127 ($xor).
+Removed top 2 bits (of 3) from port B of cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$sub$rtl/shared_accel_lane.sv:74$128 ($sub).
+Removed top 2 bits (of 32) from FF cell $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$auto$ff.cc:266:slice$537 ($sdffe).
+Removed top 2 bits (of 32) from wire $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$ternary$rtl/shared_accel_lane.sv:46$123_Y.
+Removed top 2 bits (of 32) from wire $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.$xor$rtl/shared_accel_lane.sv:47$124_Y.
+Removed top 12 bits (of 16) from port B of cell $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$ge$rtl/shared_accel_arbiter.sv:89$60 ($ge).
+Removed top 12 bits (of 16) from port B of cell $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$ge$rtl/shared_accel_arbiter.sv:90$63 ($ge).
+Removed top 15 bits (of 16) from port B of cell $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$add$rtl/shared_accel_arbiter.sv:133$80 ($add).
+Removed top 15 bits (of 16) from port B of cell $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$add$rtl/shared_accel_arbiter.sv:137$82 ($add).
+Removed top 15 bits (of 16) from port B of cell $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$add$rtl/shared_accel_arbiter.sv:141$85 ($add).
+Removed top 15 bits (of 16) from port B of cell $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.$add$rtl/shared_accel_arbiter.sv:150$91 ($add).
+
+7.10. Executing PEEPOPT pass (run peephole optimizers).
+
+7.11. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 2 unused wires.
+<suppressed ~1 debug messages>
+
+7.12. Executing ALUMACC pass (create $alu and $macc cells).
+Extracting $alu and $macc cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane:
+  creating $macc model for $sub$rtl/shared_accel_lane.sv:74$128 ($sub).
+  creating $alu model for $macc $sub$rtl/shared_accel_lane.sv:74$128.
+  creating $alu cell for $sub$rtl/shared_accel_lane.sv:74$128: $auto$alumacc.cc:485:replace_alu$581
+  created 1 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter:
+  creating $macc model for $add$rtl/shared_accel_arbiter.sv:133$80 ($add).
+  creating $macc model for $add$rtl/shared_accel_arbiter.sv:137$82 ($add).
+  creating $macc model for $add$rtl/shared_accel_arbiter.sv:141$85 ($add).
+  creating $macc model for $add$rtl/shared_accel_arbiter.sv:150$91 ($add).
+  creating $alu model for $macc $add$rtl/shared_accel_arbiter.sv:150$91.
+  creating $alu model for $macc $add$rtl/shared_accel_arbiter.sv:141$85.
+  creating $alu model for $macc $add$rtl/shared_accel_arbiter.sv:137$82.
+  creating $alu model for $macc $add$rtl/shared_accel_arbiter.sv:133$80.
+  creating $alu model for $ge$rtl/shared_accel_arbiter.sv:89$60 ($ge): new $alu
+  creating $alu model for $ge$rtl/shared_accel_arbiter.sv:90$63 ($ge): new $alu
+  creating $alu model for $ge$rtl/shared_accel_arbiter.sv:94$67 ($ge): new $alu
+  creating $alu model for $gt$rtl/shared_accel_arbiter.sv:142$87 ($gt): new $alu
+  creating $alu model for $gt$rtl/shared_accel_arbiter.sv:151$93 ($gt): new $alu
+  creating $alu model for $gt$rtl/shared_accel_arbiter.sv:95$68 ($gt): merged with $ge$rtl/shared_accel_arbiter.sv:94$67.
+  creating $alu cell for $gt$rtl/shared_accel_arbiter.sv:151$93: $auto$alumacc.cc:485:replace_alu$589
+  creating $alu cell for $gt$rtl/shared_accel_arbiter.sv:142$87: $auto$alumacc.cc:485:replace_alu$600
+  creating $alu cell for $ge$rtl/shared_accel_arbiter.sv:94$67, $gt$rtl/shared_accel_arbiter.sv:95$68: $auto$alumacc.cc:485:replace_alu$611
+  creating $alu cell for $ge$rtl/shared_accel_arbiter.sv:90$63: $auto$alumacc.cc:485:replace_alu$624
+  creating $alu cell for $ge$rtl/shared_accel_arbiter.sv:89$60: $auto$alumacc.cc:485:replace_alu$633
+  creating $alu cell for $add$rtl/shared_accel_arbiter.sv:133$80: $auto$alumacc.cc:485:replace_alu$642
+  creating $alu cell for $add$rtl/shared_accel_arbiter.sv:137$82: $auto$alumacc.cc:485:replace_alu$645
+  creating $alu cell for $add$rtl/shared_accel_arbiter.sv:141$85: $auto$alumacc.cc:485:replace_alu$648
+  creating $alu cell for $add$rtl/shared_accel_arbiter.sv:150$91: $auto$alumacc.cc:485:replace_alu$651
+  created 9 $alu and 0 $macc cells.
+Extracting $alu and $macc cells in module shared_accel_top:
+  created 0 $alu and 0 $macc cells.
+
+7.13. Executing SHARE pass (SAT-based resource sharing).
+
+7.14. Executing OPT pass (performing simple optimizations).
+
+7.14.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.14.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.14.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.14.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.14.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.14.6. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.14.7. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 6 unused wires.
+<suppressed ~1 debug messages>
+
+7.14.8. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.14.9. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.14.10. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.14.11. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.14.12. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.14.13. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.14.14. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.14.15. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.14.16. Finished OPT passes. (There is nothing left to do.)
+
+7.15. Executing MEMORY pass.
+
+7.15.1. Executing OPT_MEM pass (optimize memories).
+Performed a total of 0 transformations.
+
+7.15.2. Executing OPT_MEM_PRIORITY pass (removing unnecessary memory write priority relations).
+Performed a total of 0 transformations.
+
+7.15.3. Executing OPT_MEM_FEEDBACK pass (finding memory read-to-write feedback paths).
+
+7.15.4. Executing MEMORY_BMUX2ROM pass (converting muxes to ROMs).
+
+7.15.5. Executing MEMORY_DFF pass (merging $dff cells to $memrd).
+
+7.15.6. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.15.7. Executing MEMORY_SHARE pass (consolidating $memrd/$memwr cells).
+
+7.15.8. Executing OPT_MEM_WIDEN pass (optimize memories where all ports are wide).
+Performed a total of 0 transformations.
+
+7.15.9. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.15.10. Executing MEMORY_COLLECT pass (generating $mem cells).
+
+7.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.17. Executing OPT pass (performing simple optimizations).
+
+7.17.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+<suppressed ~20 debug messages>
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+<suppressed ~7 debug messages>
+Optimizing module shared_accel_top.
+
+7.17.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.17.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.17.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 13 unused wires.
+<suppressed ~2 debug messages>
+
+7.17.5. Finished fast OPT passes.
+
+7.18. Executing MEMORY_MAP pass (converting memories to logic and flip-flops).
+
+7.19. Executing OPT pass (performing simple optimizations).
+
+7.19.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.19.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.19.3. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.19.4. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+    Consolidated identical input bits for $mux cell $ternary$rtl/shared_accel_lane.sv:46$123:
+      Old ports: A=30'010000000000000000000000000000, B=30'100000000000000000000000000000, Y={ $auto$opt_expr.cc:205:group_cell_inputs$656 $auto$wreduce.cc:461:run$579 [7:0] }
+      New ports: A=2'01, B=2'10, Y=$auto$opt_expr.cc:205:group_cell_inputs$656 [21:20]
+      New connections: { $auto$opt_expr.cc:205:group_cell_inputs$656 [19:0] $auto$wreduce.cc:461:run$579 [7:0] } = 28'0000000000000000000000000000
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 1 changes.
+
+7.19.5. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.19.6. Executing OPT_SHARE pass.
+
+7.19.7. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.19.8. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+7.19.9. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+<suppressed ~1 debug messages>
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.19.10. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.19.11. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.19.12. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.19.13. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.19.14. Executing OPT_SHARE pass.
+
+7.19.15. Executing OPT_DFF pass (perform DFF optimizations).
+Setting constant 0-bit at position 8 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 9 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 10 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 11 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 12 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 13 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 14 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 15 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 16 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 17 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 18 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 19 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 20 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 21 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 22 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 23 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 24 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 25 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 26 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Setting constant 0-bit at position 27 on $auto$ff.cc:266:slice$537 ($sdffe) from module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+
+7.19.16. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 1 unused wires.
+<suppressed ~1 debug messages>
+
+7.19.17. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.19.18. Rerunning OPT passes. (Maybe there is more to do..)
+
+7.19.19. Executing OPT_MUXTREE pass (detect dead branches in mux trees).
+Running muxtree optimizer on module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+  Creating internal representation of mux trees.
+  Evaluating internal representation of mux trees.
+  Analyzing evaluation results.
+Running muxtree optimizer on module \shared_accel_top..
+  Creating internal representation of mux trees.
+  No muxes found in this module.
+Removed 0 multiplexer ports.
+<suppressed ~10 debug messages>
+
+7.19.20. Executing OPT_REDUCE pass (consolidate $*mux and $reduce_* inputs).
+  Optimizing cells in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+  Optimizing cells in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+  Optimizing cells in module \shared_accel_top.
+Performed a total of 0 changes.
+
+7.19.21. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 0 cells.
+
+7.19.22. Executing OPT_SHARE pass.
+
+7.19.23. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.19.24. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+
+7.19.25. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.19.26. Finished OPT passes. (There is nothing left to do.)
+
+7.20. Executing TECHMAP pass (map to technology primitives).
+
+7.20.1. Executing Verilog-2005 frontend: /usr/bin/../share/yosys/techmap.v
+Parsing Verilog input from `/usr/bin/../share/yosys/techmap.v' to AST representation.
+Generating RTLIL representation for module `\_90_simplemap_bool_ops'.
+Generating RTLIL representation for module `\_90_simplemap_reduce_ops'.
+Generating RTLIL representation for module `\_90_simplemap_logic_ops'.
+Generating RTLIL representation for module `\_90_simplemap_compare_ops'.
+Generating RTLIL representation for module `\_90_simplemap_various'.
+Generating RTLIL representation for module `\_90_simplemap_registers'.
+Generating RTLIL representation for module `\_90_shift_ops_shr_shl_sshl_sshr'.
+Generating RTLIL representation for module `\_90_shift_shiftx'.
+Generating RTLIL representation for module `\_90_fa'.
+Generating RTLIL representation for module `\_90_lcu'.
+Generating RTLIL representation for module `\_90_alu'.
+Generating RTLIL representation for module `\_90_macc'.
+Generating RTLIL representation for module `\_90_alumacc'.
+Generating RTLIL representation for module `\$__div_mod_u'.
+Generating RTLIL representation for module `\$__div_mod_trunc'.
+Generating RTLIL representation for module `\_90_div'.
+Generating RTLIL representation for module `\_90_mod'.
+Generating RTLIL representation for module `\$__div_mod_floor'.
+Generating RTLIL representation for module `\_90_divfloor'.
+Generating RTLIL representation for module `\_90_modfloor'.
+Generating RTLIL representation for module `\_90_pow'.
+Generating RTLIL representation for module `\_90_pmux'.
+Generating RTLIL representation for module `\_90_demux'.
+Generating RTLIL representation for module `\_90_lut'.
+Successfully finished Verilog frontend.
+
+7.20.2. Continuing TECHMAP pass.
+Using extmapper simplemap for cells of type $not.
+Using extmapper simplemap for cells of type $or.
+Using extmapper simplemap for cells of type $reduce_and.
+Using extmapper simplemap for cells of type $reduce_or.
+Using template $paramod$2af30114e9bd4ccb04dad757b3f0a8f6bf0615b0\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $and.
+Using template $paramod$9a7f8f842c7d15a8f6b6820db3daba71c00239a1\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $logic_and.
+Using extmapper simplemap for cells of type $mux.
+Using extmapper simplemap for cells of type $logic_not.
+Using template $paramod$6df0329addda9228fcc2546de2aaf14ad26c98e1\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $reduce_bool.
+Using extmapper simplemap for cells of type $sdff.
+Using extmapper simplemap for cells of type $sdffe.
+Using extmapper simplemap for cells of type $pos.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000010000 for cells of type $lcu.
+Using extmapper simplemap for cells of type $xor.
+Using template $paramod$b8c0a997bce700f23568a5ada79cc6781d1f5ca0\_90_alu for cells of type $alu.
+Using extmapper simplemap for cells of type $ne.
+Using template $paramod\_90_lcu\WIDTH=32'00000000000000000000000000000011 for cells of type $lcu.
+No more expansions possible.
+<suppressed ~1143 debug messages>
+
+7.21. Executing OPT pass (performing simple optimizations).
+
+7.21.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+<suppressed ~21 debug messages>
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+<suppressed ~593 debug messages>
+Optimizing module shared_accel_top.
+
+7.21.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+<suppressed ~9 debug messages>
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+<suppressed ~342 debug messages>
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 117 cells.
+
+7.21.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.21.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 214 unused cells and 626 unused wires.
+<suppressed ~216 debug messages>
+
+7.21.5. Finished fast OPT passes.
+
+7.22. Executing ABC pass (technology mapping using ABC).
+
+7.22.1. Extracting gate netlist of module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane' to `<abc-temp-dir>/input.blif'..
+Extracted 34 gates and 63 wires to a netlist network with 27 inputs and 19 outputs.
+
+7.22.1.1. Executing ABC.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: Entered genlib library with 13 gates from file "<abc-temp-dir>/stdcells.genlib".
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+7.22.1.2. Re-integrating ABC results.
+ABC RESULTS:             ORNOT cells:        1
+ABC RESULTS:               NOT cells:        3
+ABC RESULTS:              NAND cells:        1
+ABC RESULTS:              XNOR cells:        1
+ABC RESULTS:                OR cells:        3
+ABC RESULTS:               NOR cells:        1
+ABC RESULTS:            ANDNOT cells:        4
+ABC RESULTS:               MUX cells:        2
+ABC RESULTS:               XOR cells:       13
+ABC RESULTS:        internal signals:       17
+ABC RESULTS:           input signals:       27
+ABC RESULTS:          output signals:       19
+Removing temp directory.
+
+7.22.2. Extracting gate netlist of module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter' to `<abc-temp-dir>/input.blif'..
+Extracted 545 gates and 687 wires to a netlist network with 141 inputs and 93 outputs.
+
+7.22.2.1. Executing ABC.
+Running ABC command: "<yosys-exe-dir>/yosys-abc" -s -f <abc-temp-dir>/abc.script 2>&1
+ABC: ABC command line: "source <abc-temp-dir>/abc.script".
+ABC: 
+ABC: + read_blif <abc-temp-dir>/input.blif 
+ABC: + read_library <abc-temp-dir>/stdcells.genlib 
+ABC: Entered genlib library with 13 gates from file "<abc-temp-dir>/stdcells.genlib".
+ABC: + strash 
+ABC: + dretime 
+ABC: + map 
+ABC: + write_blif <abc-temp-dir>/output.blif 
+
+7.22.2.2. Re-integrating ABC results.
+ABC RESULTS:              XNOR cells:       36
+ABC RESULTS:             ORNOT cells:       28
+ABC RESULTS:               NOR cells:        8
+ABC RESULTS:               MUX cells:       24
+ABC RESULTS:                OR cells:       80
+ABC RESULTS:            ANDNOT cells:      160
+ABC RESULTS:               AND cells:       32
+ABC RESULTS:               XOR cells:       72
+ABC RESULTS:               NOT cells:       51
+ABC RESULTS:              NAND cells:       24
+ABC RESULTS:        internal signals:      453
+ABC RESULTS:           input signals:      141
+ABC RESULTS:          output signals:       93
+Removing temp directory.
+
+7.22.3. Extracting gate netlist of module `\shared_accel_top' to `<abc-temp-dir>/input.blif'..
+Extracted 0 gates and 0 wires to a netlist network with 0 inputs and 0 outputs.
+Don't call ABC as there is nothing to map.
+Removing temp directory.
+
+7.23. Executing OPT pass (performing simple optimizations).
+
+7.23.1. Executing OPT_EXPR pass (perform const folding).
+Optimizing module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane.
+<suppressed ~2 debug messages>
+Optimizing module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter.
+Optimizing module shared_accel_top.
+
+7.23.2. Executing OPT_MERGE pass (detect identical cells).
+Finding identical cells in module `$paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane'.
+<suppressed ~3 debug messages>
+Finding identical cells in module `$paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter'.
+Finding identical cells in module `\shared_accel_top'.
+Removed a total of 1 cells.
+
+7.23.3. Executing OPT_DFF pass (perform DFF optimizations).
+
+7.23.4. Executing OPT_CLEAN pass (remove unused cells and wires).
+Finding unused cells or wires in module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane..
+Finding unused cells or wires in module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter..
+Finding unused cells or wires in module \shared_accel_top..
+Removed 0 unused cells and 462 unused wires.
+<suppressed ~5 debug messages>
+
+7.23.5. Finished fast OPT passes.
+
+7.24. Executing HIERARCHY pass (managing design hierarchy).
+
+7.24.1. Analyzing design hierarchy..
+Top module:  \shared_accel_top
+Used module:     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter
+Used module:     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane
+
+7.24.2. Analyzing design hierarchy..
+Top module:  \shared_accel_top
+Used module:     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter
+Used module:     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane
+Removed 0 unused modules.
+
+7.25. Printing statistics.
+
+=== $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane ===
+
+   Number of wires:                 45
+   Number of wire bits:            119
+   Number of public wires:          18
+   Number of public wire bits:      92
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 72
+     $_ANDNOT_                       4
+     $_MUX_                          1
+     $_NAND_                         1
+     $_NOR_                          1
+     $_NOT_                          3
+     $_ORNOT_                        1
+     $_OR_                           3
+     $_SDFFE_PP0P_                  42
+     $_SDFF_PP0_                     2
+     $_XNOR_                         1
+     $_XOR_                         13
+
+=== $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter ===
+
+   Number of wires:                459
+   Number of wire bits:            690
+   Number of public wires:          26
+   Number of public wire bits:     167
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                612
+     $_ANDNOT_                     160
+     $_AND_                         32
+     $_MUX_                         24
+     $_NAND_                        24
+     $_NOR_                          8
+     $_NOT_                         51
+     $_ORNOT_                       28
+     $_OR_                          80
+     $_SDFFE_PP0P_                  65
+     $_SDFF_PP0_                    32
+     $_XNOR_                        36
+     $_XOR_                         72
+
+=== shared_accel_top ===
+
+   Number of wires:                 26
+   Number of wire bits:            175
+   Number of public wires:          26
+   Number of public wire bits:     175
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  2
+     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane      1
+     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter      1
+
+=== design hierarchy ===
+
+   shared_accel_top                  1
+     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane      1
+     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter      1
+
+   Number of wires:                530
+   Number of wire bits:            984
+   Number of public wires:          70
+   Number of public wire bits:     434
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                684
+     $_ANDNOT_                     164
+     $_AND_                         32
+     $_MUX_                         25
+     $_NAND_                        25
+     $_NOR_                          9
+     $_NOT_                         54
+     $_ORNOT_                       29
+     $_OR_                          83
+     $_SDFFE_PP0P_                 107
+     $_SDFF_PP0_                    34
+     $_XNOR_                        37
+     $_XOR_                         85
+
+7.26. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane...
+Checking module $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter...
+Checking module shared_accel_top...
+Found and reported 0 problems.
+
+8. Printing statistics.
+
+=== $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane ===
+
+   Number of wires:                 45
+   Number of wire bits:            119
+   Number of public wires:          18
+   Number of public wire bits:      92
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                 72
+     $_ANDNOT_                       4
+     $_MUX_                          1
+     $_NAND_                         1
+     $_NOR_                          1
+     $_NOT_                          3
+     $_ORNOT_                        1
+     $_OR_                           3
+     $_SDFFE_PP0P_                  42
+     $_SDFF_PP0_                     2
+     $_XNOR_                         1
+     $_XOR_                         13
+
+=== $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter ===
+
+   Number of wires:                459
+   Number of wire bits:            690
+   Number of public wires:          26
+   Number of public wire bits:     167
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                612
+     $_ANDNOT_                     160
+     $_AND_                         32
+     $_MUX_                         24
+     $_NAND_                        24
+     $_NOR_                          8
+     $_NOT_                         51
+     $_ORNOT_                       28
+     $_OR_                          80
+     $_SDFFE_PP0P_                  65
+     $_SDFF_PP0_                    32
+     $_XNOR_                        36
+     $_XOR_                         72
+
+=== shared_accel_top ===
+
+   Number of wires:                 26
+   Number of wire bits:            175
+   Number of public wires:          26
+   Number of public wire bits:     175
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                  2
+     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane      1
+     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter      1
+
+=== design hierarchy ===
+
+   shared_accel_top                  1
+     $paramod$e59f08671d93850dea990a9966123cf0ed7941b2\shared_accel_lane      1
+     $paramod$fb492dca31e1be1534e2ffede672d53904b89ee6\shared_accel_arbiter      1
+
+   Number of wires:                530
+   Number of wire bits:            984
+   Number of public wires:          70
+   Number of public wire bits:     434
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                684
+     $_ANDNOT_                     164
+     $_AND_                         32
+     $_MUX_                         25
+     $_NAND_                        25
+     $_NOR_                          9
+     $_NOT_                         54
+     $_ORNOT_                       29
+     $_OR_                          83
+     $_SDFFE_PP0P_                 107
+     $_SDFF_PP0_                    34
+     $_XNOR_                        37
+     $_XOR_                         85
+
+End of script. Logfile hash: ecc914b176, CPU: user 0.79s system 0.08s, MEM: 19.84 MB peak
+Yosys 0.33 (git sha1 2584903a060)
+Time spent: 28% 1x abc (0 sec), 19% 23x opt_expr (0 sec), ...

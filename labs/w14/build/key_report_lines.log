@@ -1,0 +1,4 @@
+build/yosys_buggy.rpt:   Number of cells:                103
+build/yosys_buggy.rpt:   Number of cells:                103
+build/yosys_fixed.rpt:   Number of cells:                100
+build/yosys_fixed.rpt:   Number of cells:                100

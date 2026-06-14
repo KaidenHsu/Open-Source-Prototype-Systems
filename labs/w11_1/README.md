@@ -1,4 +1,4 @@
-# Week11 Lab1. Two-Core Cache Coherence Prototype System
+# Week11 Lab1. Two-Core Cache Coherence Prototype System Stabilization
 
 ## 1. Learning Objectives
 

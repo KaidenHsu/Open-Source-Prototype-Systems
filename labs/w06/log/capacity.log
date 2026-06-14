@@ -1,0 +1,46 @@
+./obj_dir/Vtb_cache_lab +PROGRAM=programs/program_capacity.hex +DATA=programs/data_init.hex
+Loading program: programs/program_capacity.hex
+Loading data image: programs/data_init.hex
+cycle=1 pc=00000000 instr=00000093 accesses=0 hits=0 misses=0
+cycle=2 pc=00000004 instr=00000093 accesses=0 hits=0 misses=0
+cycle=3 pc=00000004 instr=0000a183 accesses=0 hits=0 misses=0
+cycle=4 pc=00000004 instr=0000a183 accesses=0 hits=0 misses=0
+cycle=5 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=6 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=7 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=8 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=9 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=10 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=11 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=12 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=13 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=14 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=15 pc=00000004 instr=0000a183 accesses=1 hits=0 misses=1
+cycle=16 pc=00000008 instr=0000a183 accesses=2 hits=1 misses=1
+cycle=17 pc=00000008 instr=0080a203 accesses=2 hits=1 misses=1
+cycle=18 pc=00000008 instr=0080a203 accesses=2 hits=1 misses=1
+cycle=19 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=20 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=21 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=22 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=23 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=24 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=25 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=26 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=27 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=28 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=29 pc=00000008 instr=0080a203 accesses=3 hits=1 misses=2
+cycle=30 pc=0000000c instr=0080a203 accesses=4 hits=2 misses=2
+ ==== Final Lab Stats ====
+Total cycles           : 88
+Retired instructions   : 7
+Memory accesses        : 12
+Reads                  : 12
+Writes                 : 0
+Cache hits             : 6
+Cache misses           : 6
+Hit rate               : 0.500000
+Approx CPI             : 12.571429
+ Register highlights: x1=0 x2=0 x3=100 x4=102 x5=104 x6=106 x7=200
+Data[0]=100 Data[8]=102 Data[32]=200 Data[64]=400
+- rtl/tb_cache_lab.sv:74: Verilog $finish
