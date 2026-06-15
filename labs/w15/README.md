@@ -93,6 +93,4 @@ We can observe that the aging logic does cost significant area overhead, which c
 
 ## Conclusion
 
-- One or two sentences explaining how `max_wait0` and `max_wait1` changed.
-
-From this lab, I learned that how arbitration unfairness leads to starvation, and how a simple round-robin policy can mitigate the issue. Though the addition of aging logic does not make a difference in max waiting time in this lab, it can be helpful when more requestors come in and load imbalance is present. I also learned that we can use `max_wait_time` performance counter to detect arbitration unfairness. Going forward, we should keep in mind that functional correctness alone is insufficient for a robust prototype system and arbitration fairness should be enforced for a multiple requestor system.
+From this lab, I learned that how arbitration unfairness leads to starvation, and how a simple round-robin policy can alleviate this issue. Despite the addition of aging logic not changing max waiting time in this lab, it can be helpful when more requestors come in and load imbalance is present. I also learned that we can use `max_wait_time` performance counters to detect arbitration unfairness. Going forward, we should keep in mind that functional correctness alone is insufficient for a robust prototype system and arbitration fairness should be enforced in a multiple requestor system.
