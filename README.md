@@ -8,7 +8,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 --------|:-----
 [Project 1][1-1]| RV32I Single-Cycle Baseline Processor
 [Project 2-1][1-2]| RV32I Pipelined Processor with Cache Subsystem
-[Project 2-2][1-3]| Gem5: Histogram Binning Workload
+[Project 2-2][1-3]| Histogram Binning: Control Flow Reduction and Privatization
 [Project 3][1-4]| Two-Core MSI-Coherent Parallel Histogram
 [Project 4][1-5]| 2D Convolution Acceleration and Gem5 Custom Instruction Simulation
 
@@ -22,14 +22,14 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 
  Labs   | Descriptions
 --------|:-----
-[Week 3 Lab][2-1]| RV32I Smoke Test
-[Week 6 Lab][2-2]| Memory Access Patterns and Cache Reuse
+[Week 3 Lab][2-1]| RV32I Smoke Test and Linker Script
+[Week 6 Lab][2-2]| Cache 3C Model, Locality, and Write Reuse
 [Week 10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
-[Week 11 Lab1][2-4]| Two-Core Cache Coherence Prototype System Stabilization
-[Week 11 Lab2][2-5]| Gem5: Producer-Consumer Multithreading Workload
-[Week 12 Lab][2-6]| Domain Specific Accelerator and Custom RISCV Instruction
+[Week 11 Lab1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
+[Week 11 Lab2][2-5]| Producer-Consumer Multithreading Synchronization on a Dual-Core System
+[Week 12 Lab][2-6]| Custom RISC-V Histogram Instructions: QEMU Functional Validation and Gem5 Cycle-Level Analysis
 [Week 13 Lab][2-7]| McPAT-Based Energy Optimization
-[Week 14 Lab][2-8]| Security in a Toy Accelerator
+[Week 14 Lab][2-8]| Timing Side-Channel Security: Token Comparator Leakage in RTL
 [Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration
 
 [2-1]: labs/w03/

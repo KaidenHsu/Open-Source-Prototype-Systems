@@ -1,4 +1,4 @@
-# Week 2 Lab. RV32I Smoke Test
+# Week 2 Lab. RV32I Smoke Test and Linker Script
 
 ## 1. Introduction
 

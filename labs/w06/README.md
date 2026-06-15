@@ -1,4 +1,4 @@
-# Week 6 Lab. Memory Access Patterns and Cache Reuse
+# Week 6 Lab. Cache 3C Model, Locality, and Write Reuse
 
 ## 1. Introduction
 

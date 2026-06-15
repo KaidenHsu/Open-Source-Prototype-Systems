@@ -1,4 +1,4 @@
-# Week 12 Lab. Domain Specific Accelerator and Custom RISCV Instruction
+# Week 12 Lab. Custom RISC-V Histogram Instructions: QEMU Functional Validation and Gem5 Cycle-Level Analysis
 
 ## 1. Introduction
 
@@ -35,7 +35,7 @@ if (xhrange(x, range_cfg)) {
 }
 ```
 
-## 4. Custom Instruction Addition (`xhist_intrin.h`)
+## 4. Custom Instruction Proposals (`xhist_intrin.h`)
 
 take `xhrange` instruction for example
 

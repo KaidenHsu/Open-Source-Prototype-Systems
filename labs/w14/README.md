@@ -1,4 +1,4 @@
-# Week 14 Lab. Security in a Toy Accelerator
+# Week 14 Lab. Timing Side-Channel Security: Token Comparator Leakage in RTL
 
 ## 1. Introduction
 
@@ -25,9 +25,22 @@ Use `make wave-buggy` or `make wave-fixed` to open the generated VCD in GTKWave.
 
 Assume an untrusted program can submit candidate tokens to a memory-mapped accelerator and measure when the accelerator asserts `done`. The final `match` bit is architecturally allowed. The byte position of the first mismatch is not allowed to leak.
 
-## 5. Directed and Randomized Verification
+## 5. Timing Side-Channel Leakage Patch
 
-### `secure_compare_buggy.sv`
+``` v
+if (last_byte) begin
+    running <= 1'b0;
+    done <= 1'b1;
+    match <= !(mismatch_seen || !byte_equal);
+end else begin
+    mismatch_seen <= (mismatch_seen || !byte_equal);
+    idx <= idx + IDX_W'(1);
+end
+```
+
+## 6. Directed and Randomized Verification
+
+### 6.1 `secure_compare_buggy.sv`
 
 | case | candidate_hex | match | latency_cycles | debug_count |
 | --- | --- | ---: | ---: | ---: |
@@ -42,7 +55,7 @@ Assume an untrusted program can submit candidate tokens to a memory-mapped accel
 | random_3 | 0x772c418d25001f87 | 0 | 1 | 0 |
 | random_4 | 0x7e59d70683ee5508 | 0 | 1 | 0 |
 
-### `secure_compare_fixed.sv`
+### 6.2 `secure_compare_fixed.sv`
 
 | case | candidate_hex | match | latency_cycles | debug_count |
 | --- | --- | ---: | ---: | ---: |
@@ -57,7 +70,7 @@ Assume an untrusted program can submit candidate tokens to a memory-mapped accel
 | random_3 | 0x772c418d25001f87 | 0 | 8 | 0 |
 | random_4 | 0x7e59d70683ee5508 | 0 | 8 | 0 |
 
-## 6. Conclusion
+## 7. Conclusion
 
 - Timing side channels can leak sensitive information when observable outputs (e.g. `done`) vary with internal progress; even a simple early-exit can expose the index of the first mismatching byte.
 - Public debug signals must be designed carefully — `debug_count` in the buggy design directly revealed internal state and should be gated or kept constant in publicly-observable modes.

@@ -1,18 +1,19 @@
-# Week11 Lab1. Two-Core Cache Coherence Prototype System Stabilization
+# Week11 Lab1. Dual-Core Cache Coherence Prototype System Stabilization
 
-## 1. Learning Objectives
+## 1. Introduction
 
 - Understand the two-core cache microarchitecture used in this exercise and the coherence checks implemented as SystemVerilog assertions.
 - Be able to run the supplied directed and randomized tests and interpret the self-checking log output.
 - Convert observed failures into a precise invariant and validate fixes with the provided test cases (`run-case-b`, `run-case-c`, `run-case-d`).
 - Implement one or more assertion goals from Exercise F near the end of `rtl/two_core_cache_system.sv` before `endmodule`.
 
-**Quick Start:**
+## 2. Workflow
+
 ``` bash
 $ ./run.sh
 ```
 
-## 2. System Architecture
+## 3. System Architecture
 
 The design is a minimal two-core cache system with a shared backing memory and per-core direct-mapped caches. Key files:
 
@@ -38,7 +39,7 @@ The design is a minimal two-core cache system with a shared backing memory and p
 - Core 1 interface (valid, we, addr, wdata) maps to C1 private cache and shared memory
 - Snoop invalidation links the two private caches on conflicting writes
 
-## 3. Baseline Stabiliization Run
+## 4. Baseline Stabiliization Run
 
 Purpose: confirm the baseline model and test harness are stable before attempting any edits.
 
@@ -59,8 +60,7 @@ Files to inspect on failure:
 - `logs/baseline.log`
 - `obj_dir/Vtb_week11.h` and generated simulator artifacts (only for deeper investigation)
 
-
-## 4. Case B: First Failing Scenario
+## 5. Case B: First Failing Scenario
 
 Target: `make run-case-b` builds with `-GLAB_VARIANT=1` and runs the directed trace.
 
@@ -89,8 +89,7 @@ Relevant locations:
 - `rtl/two_core_cache_system.sv` — look at the write path that updates `mem` and invalidates the peer cache line.
 - `rtl/tb_week11.sv` — directed sequence labels and the `do_single`/`do_dual` helpers that record expected values.
 
-
-## 5. Case C: Address Contract Failure
+## 6. Case C: Address Contract Failure
 
 Target: `make run-case-c` builds with `-GLAB_VARIANT=2` and replays `traces/address_alias.trace`.
 
@@ -123,8 +122,7 @@ Relevant locations:
 - `rtl/two_core_cache_system.sv` — `c0_idx`/`c1_idx` calculations and `line_addr_matches_cache` helper.
 - `traces/address_alias.trace` — concrete trace steps that reproduce the aliasing scenario.
 
-
-## 6. Case D: Same Cycle Interaction
+## 7. Case D: Same Cycle Interaction
 
 Target: `make run-case-d` builds with `-GLAB_VARIANT=3` and replays `traces/simultaneous_race.trace`.
 
@@ -153,7 +151,7 @@ Relevant locations:
 - `traces/simultaneous_race.trace` — the canonical race trace.
 
 
-## 7. Write One New Trace
+## 8. Write One New Trace
 
 Trace format: text lines parsed by the testbench via `$sscanf` in `rtl/tb_week11.sv`. Each non-comment line has four fields: `OP CORE ADDR DATA` where `OP` is `R` or `W` (or `D` for a hardcoded simultaneous dual op used by the harness).
 
@@ -168,6 +166,7 @@ W 0 0x20 0xCAFE0001
 R 1 0x20 0x00000000
 D 0 0x00 0x00000000   # special dual-case helper in the TB
 ```
+
 3. Verify trace format:
 
 ```bash
@@ -182,8 +181,7 @@ $ make run-raw-trace
 
 Notes: the `trace_replay` task in `rtl/tb_week11.sv` gracefully falls back to the directed default if it cannot open the trace file.
 
-
-## 8. Exercise F: Assertions
+## 9. Exercise F: Assertions
 
 | No | Assertion goal |
 |---|---|
@@ -195,7 +193,7 @@ Notes: the `trace_replay` task in `rtl/tb_week11.sv` gracefully falls back to th
 
 Where to place it: add the selected check near the end of `rtl/two_core_cache_system.sv`.
 
-## 9. Takeaway
+## 10. Conclusion
 
 - **Testing**: asks whether examples behave as expected
 - **Verification**: asks whether properties remain true across many behaviors
