@@ -1,4 +1,4 @@
-# Week 13 Lab: McPAT-Based Energy Optimization
+# Week 13 Lab: McPAT Processor Energy Analysis: Cache Size and Clock Frequency
 
 ## 1. Introduction
 
@@ -74,9 +74,9 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 - Variant A (`freq_fast`) change: `--cpu-clock=1.2GHz `
 - Variant B (`l1d_big`) change: `--l1d_size=64kB --l1d_assoc=4`
 
-## 5. Results and Observations
+## 5. Results
 
-### `array_sum.c`
+### 5.1 `array_sum.c`
 
 | config | sim_seconds | cycles | instructions | dcache_accesses | dcache_misses | dynamic_w | leakage_w | avg_power_w | energy_j | epi_j_per_inst | edp_j_s |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -84,7 +84,7 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 | freq_fast | 0.019496 | 2.34043e+07 | 6.49035e+06 | 3.18663e+06 | 67660 | 0.0934882 | 0.133595 | 0.227083 | 0.00442721 | 6.82123e-10 | 8.6313e-05 |
 | l1d_big | 0.021817 | 2.18169e+07 | 6.49035e+06 | 3.18663e+06 | 2619 | 0.0965207 | 0.15519 | 0.251711 | 0.00549157 | 8.46114e-10 | 0.00011981 |
 
-### `branchy_loop.c`
+### 5.2 `branchy_loop.c`
 
 | config | sim_seconds | cycles | instructions | dcache_accesses | dcache_misses | dynamic_w | leakage_w | avg_power_w | energy_j | epi_j_per_inst | edp_j_s |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -92,7 +92,7 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 | freq_fast | 0.038125 | 4.57678e+07 | 1.63047e+07 | 3.20317e+06 | 68663 | 0.0875649 | 0.133595 | 0.22116 | 0.00843172 | 5.17134e-10 | 0.000321459 |
 | l1d_big | 0.045732 | 4.57316e+07 | 1.63047e+07 | 3.20317e+06 | 68638 | 0.0848442 | 0.15519 | 0.240034 | 0.0109772 | 6.73256e-10 | 0.000502011 |
 
-### `mini_matmul.c`
+### 5.3 ``mini_matmul.c`
 
 | config | sim_seconds | cycles | instructions | dcache_accesses | dcache_misses | dynamic_w | leakage_w | avg_power_w | energy_j | epi_j_per_inst | edp_j_s |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 | freq_fast | 0.016188 | 1.94329e+07 | 5.53261e+06 | 2.03484e+06 | 1463 | 0.0924749 | 0.133595 | 0.22607 | 0.00365962 | 6.61463e-10 | 5.92419e-05 |
 | l1d_big | 0.01941 | 1.94103e+07 | 5.53261e+06 | 2.03484e+06 | 1435 | 0.0900758 | 0.15519 | 0.245266 | 0.00476061 | 8.60463e-10 | 9.24034e-05 |
 
-### observations
+### 5.4 Observations
 
 | Aspect | Observation |
 | --- | --- |
@@ -110,5 +110,6 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 | Cache or memory effect | significantly fewer `dcache_misses` for `array_sum.c`, but not for `branchy_loop.c` and `mini_matmul.c` |
 
 ## 6. Conclusion
+
 - McPAT estimates are produced from example templates and heuristic mappings of simulator counters to activity factors. They do not include post‑layout parasitics, process‑corner tuning, physical implementation details, or on‑chip/off‑chip measurement calibration. As a result, McPAT outputs are useful for relative trends and architectural sensitivity analysis but not for absolute power signoff.
 - Always compare runs using the same binary and input size. Treat McPAT outputs as comparative guidance; if absolute accuracy is required, calibrate templates/patches against measured data or more detailed physical models.

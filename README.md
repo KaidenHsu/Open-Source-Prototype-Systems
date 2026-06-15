@@ -28,7 +28,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Week 11 Lab1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
 [Week 11 Lab2][2-5]| Producer-Consumer Multithreading Synchronization on a Dual-Core System
 [Week 12 Lab][2-6]| Evaluating Custom RISC-V Histogram Binning Instructions
-[Week 13 Lab][2-7]| McPAT-Based Energy Optimization
+[Week 13 Lab][2-7]| McPAT Processor Energy Analysis: Cache Size and Clock Frequency
 [Week 14 Lab][2-8]| Timing Side-Channel Security: Token Comparator Leakage in RTL
 [Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration
 
