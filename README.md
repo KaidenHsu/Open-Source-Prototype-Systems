@@ -1,6 +1,6 @@
 # Open Source Prototype Systems
 
-course projects for "Open Source Prototype Systems and Applications (2026 Spring)" in NSYSU, Taiwan
+course projects and labs for "Open Source Prototype Systems and Applications (2026 Spring)" in NSYSU, Taiwan
 
 ## Projects
 
@@ -22,15 +22,15 @@ course projects for "Open Source Prototype Systems and Applications (2026 Spring
 
  Labs   | Descriptions
 --------|:-----
-[W3 Lab][2-1]| RV32I Smoke Test
-[W6 Lab][2-2]| Memory Access Patterns and Cache Reuse
-[W10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
-[W11 Lab1][2-4]| Two-Core Cache Coherence Prototype System Stabilization
-[W11 Lab2][2-5]| Gem5: Producer-Consumer Multithreading Workload
-[W12 Lab][2-6]| Domain Specific Accelerator and Custom RISCV Instruction
-[W13 Lab][2-7]| McPAT-Based Energy Optimization
-[W14 Lab][2-8]| Security in a Toy Accelerator
-[W15 Lab][2-9]| Fair-Shared Accelerator Arbitration
+[Week 3 Lab][2-1]| RV32I Smoke Test
+[Week 6 Lab][2-2]| Memory Access Patterns and Cache Reuse
+[Week 10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
+[Week 11 Lab1][2-4]| Two-Core Cache Coherence Prototype System Stabilization
+[Week 11 Lab2][2-5]| Gem5: Producer-Consumer Multithreading Workload
+[Week 12 Lab][2-6]| Domain Specific Accelerator and Custom RISCV Instruction
+[Week 13 Lab][2-7]| McPAT-Based Energy Optimization
+[Week 14 Lab][2-8]| Security in a Toy Accelerator
+[Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration
 
 [2-1]: labs/w03/
 [2-2]: labs/w06/
