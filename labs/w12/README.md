@@ -1,4 +1,4 @@
-# Week 12 Lab. Custom RISC-V Histogram Instructions: QEMU Functional Validation and Gem5 Cycle-Level Analysis
+# Week 12 Lab. Evaluating Custom RISC-V Histogram Binning Instructions
 
 ## 1. Introduction
 

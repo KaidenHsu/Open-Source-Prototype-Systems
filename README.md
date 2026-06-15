@@ -27,7 +27,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Week 10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
 [Week 11 Lab1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
 [Week 11 Lab2][2-5]| Producer-Consumer Multithreading Synchronization on a Dual-Core System
-[Week 12 Lab][2-6]| Custom RISC-V Histogram Instructions: QEMU Functional Validation and Gem5 Cycle-Level Analysis
+[Week 12 Lab][2-6]| Evaluating Custom RISC-V Histogram Binning Instructions
 [Week 13 Lab][2-7]| McPAT-Based Energy Optimization
 [Week 14 Lab][2-8]| Timing Side-Channel Security: Token Comparator Leakage in RTL
 [Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration
