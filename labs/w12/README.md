@@ -7,12 +7,12 @@ This project explores a small histogram kernel on RISC-V using two implementatio
 ## 2. Workflow
 
 ``` bash
-$ ./run.sh
+$  bash run.sh
 ```
 
 ## 3. Workloads
 
-### `hist_baseline.c`
+### 3.1 Baseline (`hist_baseline.c`)
 
 ``` c
 if (x >= min_val && x < max_val) {
@@ -24,7 +24,7 @@ if (x >= min_val && x < max_val) {
 }
 ```
 
-### `hist_xhist.c`
+### 3.2 Custom Instruction (`hist_xhist.c`)
 
 ``` c
 if (xhrange(x, range_cfg)) {
@@ -59,7 +59,7 @@ mode: xhist
 checksum: 0x199fd000
 ```
 
-`checksum`s for both runs are the same, which proves functional correctness.
+`checksum` for both runs are the same, which proves functional correctness.
 
 ## 6. Gem5 Architectural Simulation
 
@@ -97,7 +97,7 @@ static void init_input(void)
 | `system.cpu.dcache.overallMisses::total` | 1309 | 1308 | 0.08 |
 | `system.cpu.icache.overallMisses::total` | 389 | 388 | 0.26 |
 
-### 6.3 hot bin clustered
+### 6.3 Hot Bin Clustered
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
@@ -108,7 +108,7 @@ static void init_input(void)
 | `system.cpu.dcache.overallMisses::total` | 1309 | 1309 | 0.00 |
 | `system.cpu.icache.overallMisses::total` | 387 | 389 | -0.52 |
 
-### 6.4 out of range heavy
+### 6.4 Out-of-Range Heavy
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
@@ -119,7 +119,7 @@ static void init_input(void)
 | `system.cpu.dcache.overallMisses::total` | 1305 | 1305 | 0.00 |
 | `system.cpu.icache.overallMisses::total` | 395 | 399 | -1.01 |
 
-### 6.5 adversarial stride
+### 6.5 Adversarial Stride
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
