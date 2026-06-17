@@ -2,9 +2,7 @@
 
 ## 1. Introduction
 
-This project explores a small histogram kernel on RISC-V using two implementations: a baseline scalar version and an `xhist` version that uses custom instructions. The first check is functional validation with QEMU, where both versions produce the same checksum. After that, the project uses gem5 to compare cycle-level behavior under different input distributions and cache sizes, so the effect of the custom instructions can be measured in a controlled way.
-
-The README walks through the workload structure, the custom instruction support in `xhist_intrin.h`, the QEMU validation result, the gem5 input-distribution experiments, the cache sweep, and a proposed custom instruction idea for the `xhist` path.
+This project explores a small histogram kernel on RISC-V using two implementations: a baseline scalar version and an `xhist` version that explores custom instructions. The first check is functional validation with QEMU ISA simulation, where both versions produce the same checksum. After that, cycle-accurate gem5 architectural simulator is used to compare cycle-level behavior under different input distributions and cache sizes, so the effect of the custom instructions can be measured in a controlled way.
 
 ## 2. Workflow
 
@@ -50,7 +48,9 @@ static inline uint64_t xhrange(uint64_t value, uint64_t cfg)
 }
 ```
 
-## 5. QEMU Validation
+## 5. QEMU ISA Simulaton
+
+QEMU is a ISA simulator, which gives no clues of cycle-accurate architectural information.
 
 ``` bash
 mode: baseline
@@ -59,11 +59,11 @@ mode: xhist
 checksum: 0x199fd000
 ```
 
-checksums for both runs are the same, which proves functional correctness, but it gives not clues of cycle-accurate timing information
+`checksum`s for both runs are the same, which proves functional correctness.
 
-## 6. Gem5 Metrics
+## 6. Gem5 Architectural Simulation
 
-### Input Distribution Experiments
+### 6.1 Input Distribution Experiments
 
 ``` c
 static void init_input(void)
@@ -86,7 +86,7 @@ static void init_input(void)
 }
 ```
 
-#### Base Run (uniform)
+### 6.2 Base Run (uniform)
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
@@ -97,7 +97,7 @@ static void init_input(void)
 | `system.cpu.dcache.overallMisses::total` | 1309 | 1308 | 0.08 |
 | `system.cpu.icache.overallMisses::total` | 389 | 388 | 0.26 |
 
-#### hot bin clustered
+### 6.3 hot bin clustered
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
@@ -108,7 +108,7 @@ static void init_input(void)
 | `system.cpu.dcache.overallMisses::total` | 1309 | 1309 | 0.00 |
 | `system.cpu.icache.overallMisses::total` | 387 | 389 | -0.52 |
 
-#### out of range heavy
+### 6.4 out of range heavy
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
@@ -119,7 +119,7 @@ static void init_input(void)
 | `system.cpu.dcache.overallMisses::total` | 1305 | 1305 | 0.00 |
 | `system.cpu.icache.overallMisses::total` | 395 | 399 | -1.01 |
 
-#### adversarial stride
+### 6.5 adversarial stride
 
 | Metric | Baseline | XHIST | Improvement (%) |
 |---|---:|---:|---:|
@@ -134,7 +134,8 @@ static void init_input(void)
 - `hot bin clustered` made `XHIST` least useful from a `numCycles` standpoint
 - conclusion: locality helped more than branch/control reduction in this experiment
 
-### Cache Sweep
+### 6.6 Cache Sweep
+
 | L1D Size | Baseline cycles | XHIST cycles | Baseline L1D misses | XHIST L1D misses |
 |---|---:|---:|---:|---:|
 | 8 kB | 749,562 | 747,446 | 1,606 | 1,605 |
@@ -143,7 +144,7 @@ static void init_input(void)
 
 Conclusion: XHIST produces small but consistent cycle reductions (0.03–0.28%) and reduces L1D misses by 1 across these L1D sizes.
 
-### xhpack Microtest
+### 6.7 `xhpack` Microtest
 
 ``` bash
 $ qemu-riscv64-xhist build/test_xhpack.riscv
@@ -154,15 +155,13 @@ matches `((0x1234 & 0xffff) << 16) | (0xabcd & 0xffff)`, pass!
 
 ## 7. Custom Instruction Idea
 
-``` text
-Instruction: xhbinclip rd, rs1, rs2
-Meaning: rd = clipped_bin(rs1, rs2), where rs1 is the input value and rs2 packs the lower bound, upper bound, and shift amount used to compute the histogram bin.
-Encoding: opcode custom-0, funct3 = 0x4, funct7 = 0x02.
-Expected benefit: replaces the range check and bin selection sequence in `hist_xhist.c` with one fused operation.
-Concern: it still leaves the saturating histogram update as a normal load/compare/store sequence.
-```
+- **Instruction**: `xhbinclip rd, rs1, rs2`
+- **Semantic model**: `rd = clipped_bin(rs1, rs2)`, where `rs1` is the input value and `rs2` packs the lower bound, upper bound, and shift amount used to compute the histogram bin.
+- **Encoding**: opcode 0x0b (custom-0), funct3 = 0x4, funct7 = 0x02.
+- **Expected benefit**: replaces the range check and bin selection sequence in `hist_xhist.c` with one fused operation.
+- **Concern**: the saturating histogram update is still a normal load-compare-store sequence.
 
-in `xhist_intrin.h`:
+In `xhist_intrin.h`:
 
 ``` c
 static inline uint64_t xhbinclip(uint64_t a, uint64_t b)
@@ -177,6 +176,4 @@ static inline uint64_t xhbinclip(uint64_t a, uint64_t b)
 
 ## 8. Conclusion
 
-The `xhist` version preserves correctness, as shown by the matching QEMU checksum, and it also shows small but consistent cycle improvements in the gem5 measurements. Across the input-distribution runs, the effect depends on locality and control behavior, while the cache sweep shows only modest sensitivity to L1D size.
-
-Taken together, the results suggest that the most promising next step is a custom instruction focused on the hot histogram-update path. The proposal in this README aims at reducing the range check and bin selection overhead first, since that is where the clearest software-side repetition appears.
+The `xhist` version preserves correctness, as shown by the matching checksum in QEMU simulation, and it also shows small but consistent cycle improvements in the gem5 measurements. Across the input-distribution runs, the effect depends on locality and control behavior, while the cache sweep shows only modest sensitivity to L1D size.  Taken together, the results suggest that the most promising next step is a custom instruction focused on the hot histogram-update path. The proposal here aims at reducing the range check and bin selection overhead first.
