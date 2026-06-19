@@ -1,8 +1,8 @@
-# Week 12 Lab. Evaluating Custom RISC-V Histogram Binning Instructions
+# Week 12 Lab. Evaluating Custom RISC-V Sparse Histogram Binning Instructions
 
 ## 1. Introduction
 
-This project explores a small histogram kernel on RISC-V using two implementations: a baseline scalar version and an `xhist` version that explores custom instructions. The first check is functional validation with QEMU ISA simulation, where both versions produce the same checksum. After that, cycle-accurate gem5 architectural simulator is used to compare cycle-level behavior under different input distributions and cache sizes, so the effect of the custom instructions can be measured in a controlled way.
+This project explores a control-heavy, memory-sensitive sparse histogram kernel on RISC-V using two implementations: a baseline scalar version and an `xhist` version that explores custom instructions. The first check is functional validation with QEMU ISA simulation, where both versions produce the same checksum. After that, cycle-accurate gem5 architectural simulator is used to compare cycle-level behavior under different input distributions and cache sizes, so the effect of the custom instructions can be measured in a controlled way.
 
 ## 2. Workflow
 
@@ -12,7 +12,7 @@ $  bash run.sh
 
 ## 3. Workloads
 
-### 3.1 Baseline (`hist_baseline.c`)
+### 3.1 Baseline Sparse Histogram (`hist_baseline.c`)
 
 ``` c
 if (x >= min_val && x < max_val) {
@@ -24,7 +24,10 @@ if (x >= min_val && x < max_val) {
 }
 ```
 
-### 3.2 Custom Instruction (`hist_xhist.c`)
+- The workload counts how many input values fall into each histogram bin. Each input element passes through a range check, a bin computation, and a saturating counter update.
+- It is a control-heavy and memory-sensitive kernel with irregular updates.
+
+### 3.2 Custom Instruction Ideas (`hist_xhist.c`)
 
 ``` c
 if (xhrange(x, range_cfg)) {
@@ -33,7 +36,7 @@ if (xhrange(x, range_cfg)) {
 }
 ```
 
-## 4. Custom Instruction Proposals (`xhist_intrin.h`)
+## 4. Compiler Intrinsics (`xhist_intrin.h`)
 
 take `xhrange` instruction for example
 
@@ -48,9 +51,18 @@ static inline uint64_t xhrange(uint64_t value, uint64_t cfg)
 }
 ```
 
+| Instruction | Operation | What it replaces | Interpretation |
+| --- | --- | --- | --- |
+| `xhrange` | Return 1 if value is in configured range | Two comparisons and a Boolean conjunction | Control-flow reduction |
+| `xhbin` | Compute bin index from value and packed config | Subtract and variable shift | Datapath fusion |
+| `xhsat` | Increment value unless saturation limit is reached | Compare, branch/select, add | Saturating arithmetic specialization |
+| `xhpack` | Pack two 16-bit fields into one register | Shift, mask, and OR | Data-layout helper for compact metadata |
+
+**Important lesson**: The `xhist` instructions reduce computation and control overhead, but the histogram update still touches memory. Therefore, the speedup depends on whether execution was compute/control limited or memory limited.
+
 ## 5. QEMU ISA Simulaton
 
-QEMU is a ISA simulator, which gives no clues of cycle-accurate architectural information.
+QEMU is an ISA simulator.  In user-mode emulation, QEMU can launch a program compiled for one CPU architecture on a host running another architecture.
 
 ``` bash
 mode: baseline
@@ -59,7 +71,7 @@ mode: xhist
 checksum: 0x199fd000
 ```
 
-`checksum` for both runs are the same, which proves functional correctness.
+`checksum` for both runs match, which proves functional correctness, while giving no clues of cycle-accurate architectural information.
 
 ## 6. Gem5 Architectural Simulation
 
@@ -86,49 +98,16 @@ static void init_input(void)
 }
 ```
 
-### 6.2 Base Run (uniform)
+### 6.2 Input Distribution Results
 
-| Metric | Baseline | XHIST | Improvement (%) |
-|---|---:|---:|---:|
-| `simInsts` | 182861 | 182676 | 0.10 |
-| `simTicks` | 358646000 | 358163000 | 0.13 |
-| `system.cpu.numCycles` | 717292 | 716326 | 0.13 |
-| `system.cpu.ipc` | 0.254932 | 0.255018 | 0.03 |
-| `system.cpu.dcache.overallMisses::total` | 1309 | 1308 | 0.08 |
-| `system.cpu.icache.overallMisses::total` | 389 | 388 | 0.26 |
-
-### 6.3 Hot Bin Clustered
-
-| Metric | Baseline | XHIST | Improvement (%) |
-|---|---:|---:|---:|
-| `simInsts` | 180824 | 182707 | -1.04 |
-| `simTicks` | 349821000 | 353831000 | -1.15 |
-| `system.cpu.numCycles` | 699642 | 707662 | -1.15 |
-| `system.cpu.ipc` | 0.258452 | 0.258184 | -0.10 |
-| `system.cpu.dcache.overallMisses::total` | 1309 | 1309 | 0.00 |
-| `system.cpu.icache.overallMisses::total` | 387 | 389 | -0.52 |
-
-### 6.4 Out-of-Range Heavy
-
-| Metric | Baseline | XHIST | Improvement (%) |
-|---|---:|---:|---:|
-| `simInsts` | 185991 | 179683 | 3.39 |
-| `simTicks` | 351083000 | 344865000 | 1.77 |
-| `system.cpu.numCycles` | 702166 | 689730 | 1.77 |
-| `system.cpu.ipc` | 0.264882 | 0.260512 | -1.65 |
-| `system.cpu.dcache.overallMisses::total` | 1305 | 1305 | 0.00 |
-| `system.cpu.icache.overallMisses::total` | 395 | 399 | -1.01 |
-
-### 6.5 Adversarial Stride
-
-| Metric | Baseline | XHIST | Improvement (%) |
-|---|---:|---:|---:|
-| `simInsts` | 182872 | 182708 | 0.09 |
-| `simTicks` | 354290000 | 354090000 | 0.06 |
-| `system.cpu.numCycles` | 708580 | 708180 | 0.06 |
-| `system.cpu.ipc` | 0.258082 | 0.257997 | -0.03 |
-| `system.cpu.dcache.overallMisses::total` | 1309 | 1309 | 0.00 |
-| `system.cpu.icache.overallMisses::total` | 391 | 387 | 1.02 |
+| Metric | uniform (Baseline) | uniform (XHIST) | hot bin clustered (Baseline) | hot bin clustered (XHIST) | out-of-range heavy (Baseline) | out-of-range heavy (XHIST) | adversarial stride (Baseline) | adversarial stride (XHIST) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `simInsts` | 182861 | 182676 | 180824 | 182707 | 185991 | 179683 | 182872 | 182708 |
+| `simTicks` | 358646000 | 358163000 | 349821000 | 353831000 | 351083000 | 344865000 | 354290000 | 354090000 |
+| `numCycles` | 717292 | 716326 | 699642 | 707662 | 702166 | 689730 | 708580 | 708180 |
+| `IPC` | 0.254932 | 0.255018 | 0.258452 | 0.258184 | 0.264882 | 0.260512 | 0.258082 | 0.257997 |
+| `overall dcache misses` | 1309 | 1308 | 1309 | 1309 | 1305 | 1305 | 1309 | 1309 |
+| `overall icache misses` | 389 | 388 | 387 | 389 | 395 | 399 | 391 | 387 |
 
 - `out of range heavy` gave the largest benefit from a `numCycles` standpoint
 - `hot bin clustered` made `XHIST` least useful from a `numCycles` standpoint
@@ -142,7 +121,7 @@ static void init_input(void)
 | 32 kB | 717,292 | 716,326 | 1,309 | 1,308 |
 | 64 kB | 714,396 | 714,176 | 1,287 | 1,286 |
 
-Conclusion: XHIST produces small but consistent cycle reductions (0.03–0.28%) and reduces L1D misses by 1 across these L1D sizes.
+Conclusion: `xhist` produces small but consistent cycle reductions (0.03–0.28%) and reduces L1D misses by 1 across these L1D sizes.
 
 ### 6.7 `xhpack` Microtest
 
