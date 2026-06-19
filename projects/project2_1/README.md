@@ -8,7 +8,7 @@ The primary goal is to demonstrate the performance impact of caching on a pipeli
 
 ## 2. Design
 
-### 2.1 5-Stage Core Pipelien
+### 2.1 5-Stage Core Pipeline
 
 <p align="center"><img src="images/pipelined_processor.jpg" alt="pipelined processor" width="720" /></p>
 
@@ -74,7 +74,7 @@ $ bash run.sh
 - **Backing RAM Bandwidth:** While a **128-bit** memory bus simplifies implementation, it causes severe routing congestion in physical logic. A practical physical design would narrow this data interface and serialize the cache-line fetch using **DRAM burst reads**.
 - **Critical Path Timing:** The current cache miss path—where data flows from the backing RAM, through the cache controller, and directly into the CPU within a single cycle—will most definitely trigger a **timing violation**, which requires further pipelining to meet practical frequency targets.
 
-## 5. Conclusion
+## 6. Conclusion
 
 The pipelined RV32I core with a blocking, direct-mapped cache subsystem and verifies functional correctness across all test workloads. Adding the instruction cache alone eliminates a significant fraction of memory-access cycles, and the data cache provides additional benefit wherever data locality is exploitable—most visibly in the `conflict` test, which sees a 22% cycle reduction over the instruction-only configuration.
 
