@@ -1,9 +1,9 @@
-# Week11 Lab1. Dual-Core Cache Coherence Prototype System Stabilization
+# Week 11 Lab 1. Dual-Core Cache Coherence Prototype System Stabilization
 
 ## 1. Introduction
 
-- Understand the two-core cache microarchitecture used in this exercise and the coherence checks implemented as SystemVerilog assertions.
-- Be able to run the supplied directed and randomized tests and interpret the self-checking log output.
+- Understand the dual-core cache microarchitecture used in this exercise and the coherence checks implemented as SystemVerilog assertions (SVAs).
+- Run the supplied directed and randomized tests and interpret the self-checking log output.
 - Convert observed failures into a precise invariant and validate fixes with the provided test cases (`run-case-b`, `run-case-c`, `run-case-d`).
 - Implement one or more assertion goals from Exercise F near the end of `rtl/two_core_cache_system.sv` before `endmodule`.
 

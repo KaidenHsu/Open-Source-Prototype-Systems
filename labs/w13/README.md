@@ -1,4 +1,4 @@
-# Week 13 Lab: McPAT Processor Energy Analysis: Cache Size and Clock Frequency
+# Week 13 Lab: McPAT Processor Energy Analysis: Cache Size vs Clock Frequency
 
 ## 1. Introduction
 

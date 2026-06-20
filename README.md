@@ -25,10 +25,10 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Week 3 Lab][2-1]| RV32I Smoke Test and Linker Script
 [Week 6 Lab][2-2]| Cache 3C Model, Locality, and Write Reuse
 [Week 10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
-[Week 11 Lab1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
-[Week 11 Lab2][2-5]| Producer-Consumer Multithreading Synchronization on a Dual-Core System
+[Week 11 Lab 1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
+[Week 11 Lab 2][2-5]| Producer-Consumer Multithreading Dual-CPU Synchronization
 [Week 12 Lab][2-6]| Evaluating Custom RISC-V Sparse Histogram Binning Instructions
-[Week 13 Lab][2-7]| McPAT Processor Energy Analysis: Cache Size and Clock Frequency
+[Week 13 Lab][2-7]| McPAT Processor Energy Analysis: Cache Size vs Clock Frequency
 [Week 14 Lab][2-8]| Timing Side-Channel Security: Token Comparator Leakage in RTL
 [Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration
 

@@ -1,17 +1,8 @@
-# Week11 Lab2. Producer-Consumer Multithreading Synchronization on a Dual-Core System
+# Week 11 Lab 2. Producer-Consumer Multithreading Dual-CPU Synchronization
 
 ## 1. Introduction
 
-This lab contains a lightweight producer-consumer workload for Gem5 SE simulation. The workload demonstrates thread synchronization and inter-thread communication on a simulated two-CPU system using POSIX threads (`<pthread.h>`) and GCC atomic operations, which is ideal for studying cache behavior, memory ordering, and multi-threaded performance on small core counts.
-
-**Key characteristics:**
-
-- **Two threads** (one producer, one consumer) in a single process
-- **No host-file IPC**: avoids unsupported syscalls like `renameat2`
-- **Shared-memory synchronization** via global mailboxes and atomic loads and stores
-- **Release-acquire semantics** to ensure cache coherency across CPU cores
-- **Runs in gem5 SE mode** syscall emulation for fast, repeatable simulation
-
+This lab contains a lightweight producer-consumer workload under gem5 simulation. The workload demonstrates thread synchronization and inter-thread communication on a simulated two-CPU system using POSIX threads (`<pthread.h>`) and GCC atomic operations, which is ideal for studying cache behavior, memory ordering, and multi-threaded performance on small core counts.
 
 ## 2. Workflow
 
@@ -19,6 +10,9 @@ Run with default settings (2048 iterations):
 
 ```bash
 $ bash run_producer_consumer.sh
+CONSUMER role=consumer iterations=2048 observed_iters=2048 observed_sum=2098176 expected=2098176
+PRODUCER role=producer iterations=2048 sum=2098176
+PRODUCER_CONSUMER PASS
 ```
 
 1. Script locates gem5, se.py config, and RISC-V compiler
@@ -27,15 +21,9 @@ $ bash run_producer_consumer.sh
 4. Outputs results to `m5out/producer_consumer/`
 5. Displays key statistics and workload output
 
-```
-CONSUMER role=consumer iterations=2048 observed_iters=2048 observed_sum=2098176 expected=2098176
-PRODUCER role=producer iterations=2048 sum=2098176
-PRODUCER_CONSUMER PASS
-```
-
 ## 3. System Under Simulation
 
-- **2 CPUs**: TimingSimpleCPU (in-order, realistic pipeline)
+- **2 CPUs**: TimingSimpleCPU (in-order, timing memory accesses)
 - **L1 caches**: 32 KB instruction cache, 32 KB data cache per CPU (typical)
 - **L2 cache**: unified 256 KB cache (shared)
 - **Memory**: 512 MB (enough for this workload)
@@ -43,6 +31,11 @@ PRODUCER_CONSUMER PASS
 <p align="center"><img src="m5out/producer_consumer/config.dot.svg" alt="config" /></p>
 
 ## 4. Workload
+
+- **Two threads** (one producer, one consumer) in a single process
+- **No host-file IPC**: avoids unsupported syscalls like `renameat2`
+- **Shared-memory synchronization** via global mailboxes and atomic loads and stores
+- **Release-acquire semantics** to ensure cache coherency across CPUs
 
 ### 4.1 Producer Role (pthread)
 
@@ -98,13 +91,7 @@ Consumer:  while (!load(mailbox_ready, ACQUIRE)) { spin; }  ← waits, acquires
            verify(sum_obs == expected_sum(N))
 ```
 
-The **release-acquire pair** ensures the consumer sees the producer's stores before the ready flag, even on weakly-ordered architectures
-
-### 4.4 Compilation Flags
-
-``` bash
-$ riscv64-linux-gnu-gcc -O2 -std=gnu11 -static -pthread
-```
+The **release-acquire pair** ensures the consumer sees the producer's stores before the ready flag, even on weakly-ordered memory models.
 
 ## 5. Result
 
@@ -159,7 +146,7 @@ The statistics below are from a successful 2048-iteration run. They reveal cache
 
 **Cache Behavior:**
 
-| Metric | CPU 0 | CPU 1 | Insight |
+| Metric | CPU0 | CPU1 | Insight |
 |--------|-------|-------|---------|
 | **L1 D$** | 1,243 misses / 35,113 accesses = 3.5% miss rate | 96 misses / 8,399 accesses = 1.1% miss rate | Producer has very tight memory access; consumer spins and polls ready flag |
 | **L1 I$** | 521 misses / 206,447 accesses = 0.25% miss rate | 142 misses / 31,091 accesses = 0.46% miss rate | Low instruction cache pressure; simple, compact code |
@@ -168,7 +155,7 @@ The statistics below are from a successful 2048-iteration run. They reveal cache
 **Observations:**
 
 1. **No prefetch activity**: demand misses = overall misses (prefetching disabled or not applicable)
-2. **CPU 0 is memory-bound**: 35k data accesses vs. 31k for CPU 1 shows consumer doing more memory work (spinning)
+2. **CPU0 is memory-bound**: 35k data accesses vs. 31k for CPU 1 shows consumer doing more memory work (spinning)
 3. **L2 unified cache is effective**: Only 1,768 total L2 misses out of 1,951 L2 accesses = **90.6% L2 hit rate**—excellent for this workload
 4. **Inter-core communication is efficient**: Atomic operations and cache coherency work correctly; no deadlock or excessive L2 thrashing
 5. **Small working set**: ~40k total L1 accesses + ~1,951 L2 accesses suggests the workload fits well within cache hierarchy
@@ -182,6 +169,6 @@ The statistics below are from a successful 2048-iteration run. They reveal cache
 
 ## 6. Conclusion
 
-This lab demonstrated how to build and simulate a two-thread producer-consumer workload in gem5 SE mode on a RISC-V two-core system. The most important takeaway is that release-acquire semantics are essential for correctness: a release store on the ready flag paired with an acquire load on the consumer side is the minimal ordering that guarantees the consumer sees the producer's payload, and the gem5 cache stats made this visible in a way that unit tests alone cannot—CPU 0's 3.5% L1 D-cache miss rate versus CPU 1's 1.1% directly reflects the spin-wait polling pattern rather than any algorithmic inefficiency.
+This lab demonstrated how to build and simulate a two-thread producer-consumer workload on a RISC-V dual-CPU system in gem5. The most important takeaway is that release-acquire semantics are essential for correctness: a release store on the ready flag paired with an acquire load on the consumer side is the minimal ordering that guarantees the consumer sees the producer's payload. `CPU0`'s 3.5% L1 D-cache miss rate vs `CPU1`'s 1.1% directly reflects the spin-wait polling pattern rather than any algorithmic inefficiency.
 
-Going forward, the key practices are to always guard shared data with a release-store/acquire-load pair, add a poll timeout to every spin-wait to prevent silent simulation hangs. It is also worth keeping the working set small when studying synchronization effects on TimingSimpleCPU, and checking stats per-core rather than relying on aggregated totals, since asymmetric thread behavior details can get overlooked post aggregation.
+Going forward, the key practices are to always guard shared data with a release-store/acquire-load pair, add a poll timeout to every spin-wait to prevent silent simulation hangs. It is also worth keeping the working set small when studying synchronization effects on TimingSimpleCPU, and checking stats per-core rather than relying on aggregated totals to inspect asymmetric thread behavior details.
