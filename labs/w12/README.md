@@ -77,6 +77,8 @@ checksum: 0x199fd000
 
 ## 6. Input Distribution Experiments
 
+All CPU models are in-order `TimingSimpleCPU`.
+
 ### 6.1 Workload
 
 ``` c
@@ -130,6 +132,8 @@ static void init_input(void)
 - **conclusion**: The primary driver of XHIST benefit is how often `xhrange` can skip the histogram update path. The dcache miss count is nearly unchanged across all four distributions, confirming that XHIST's impact is in the control/compute path, not memory traffic. This teaches that although lower `simInsts` is useful, memory behavior can still cap speedup.
 
 ## 7. Cache Sensitivity Sweep
+
+All CPU models are in-order `TimingSimpleCPU`.
 
 | L1D Size | Baseline cycles | XHIST cycles | Baseline L1D misses | XHIST L1D misses |
 |---|---:|---:|---:|---:|
