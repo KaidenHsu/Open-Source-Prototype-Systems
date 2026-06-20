@@ -38,6 +38,8 @@ if (xhrange(x, range_cfg)) {
 
 ## 4. Compiler Intrinsics (`xhist_intrin.h`)
 
+Intrinsics are exposed by the compiler as functions that are not part of any library. For example, **assembly intrinsics** are treated by the compiler as precisely the machine instruction they represent.
+
 Take `xhrange` instruction for example:
 
 ``` c
