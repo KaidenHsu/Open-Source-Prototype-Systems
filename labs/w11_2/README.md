@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-This lab contains a lightweight producer-consumer workload under gem5 simulation. The workload demonstrates thread synchronization and inter-thread communication on a simulated two-CPU system using POSIX threads (`<pthread.h>`) and GCC atomic operations, which is ideal for studying cache behavior, memory ordering, and multi-threaded performance on small core counts.
+This lab contains a lightweight producer-consumer workload under gem5 simulation. The workload demonstrates thread synchronization and inter-thread communication on a simulated dual-CPU system using POSIX threads `<pthread.h>` and GCC atomic operations, which is ideal for studying cache behavior, memory ordering, and multi-threaded performance under small core counts.
 
 ## 2. Workflow
 
@@ -39,10 +39,10 @@ PRODUCER_CONSUMER PASS
 
 ### 4.1 Producer Role (pthread)
 
-- Computes the sum: $\sum_{i=1}^{N} i = \frac{N(N+1)}{2}$
-- Writes result to `mailbox_sum` with **relaxed atomics** (no ordering)
-- Calls `deterministic_delay()` every 64 iterations to simulate realistic work
-- Issues a **release-store** to `mailbox_ready` to publish ready flag
+- Computes the sum: $\sum_{i=1}^{N} i = \frac{N(N+1)}{2}$.
+- Writes iteration count to `mailbox_iters` and result to `mailbox_sum` with **relaxed atomics** (no ordering). These two memory accesses make up the **critical section**.
+- Calls `deterministic_delay()` every 64 iterations to simulate realistic work.
+- Issues a **release-store** to `mailbox_ready` to publish ready flag.
 
 ``` C
 // Publish payload before publishing the ready flag.
@@ -51,7 +51,7 @@ __atomic_store_n(&mailbox_iters, iterations, __ATOMIC_RELAXED);
 __atomic_store_n(&mailbox_ready, 1, __ATOMIC_RELEASE);
 ```
 
-### 4.2 Consumer Role (main thread)
+### 4.2 Consumer Role (Main Thread)
 
 - Spin-waits on `mailbox_ready` using **acquire-load** (enforces ordering)
 - Once producer signals, reads `mailbox_sum` with relaxed atomics (safe because acquire ordered it)
@@ -81,8 +81,8 @@ uint64_t expected = expected_sum(iterations);
 ### 4.3 Synchronization Pattern
 
 ``` text
-Producer:  store(mailbox_sum, sum, RELAXED)
-           store(mailbox_iters, N, RELAXED)
+Producer:  store(mailbox_sum, sum, RELAXED) // critical section
+           store(mailbox_iters, N, RELAXED) // critical section
            store(mailbox_ready, 1, RELEASE)  ← publishes visibility
                                                
 Consumer:  while (!load(mailbox_ready, ACQUIRE)) { spin; }  ← waits, acquires
@@ -91,7 +91,8 @@ Consumer:  while (!load(mailbox_ready, ACQUIRE)) { spin; }  ← waits, acquires
            verify(sum_obs == expected_sum(N))
 ```
 
-The **release-acquire pair** ensures the consumer sees the producer's stores before the ready flag, even on weakly-ordered memory models.
+- A release-store by producder and aquire-load spinlock by consumer on `mailbox_ready` enforces correctness in inter-thread communication (ITC), even on weakly-ordered memory models.
+- While spinlock (busy-waiting) works well on small core counts in this example, blocking locks perform better for larger core counts but sleep/wakeup overhead ensues.
 
 ## 5. Result
 
@@ -106,69 +107,49 @@ The statistics below are from a successful 2048-iteration run. They reveal cache
 | **hostSeconds** | 0.18 | Wall-clock time elapsed on host machine |
 | **IPC** | ~0.27 | Instructions per cycle (typical for in-order CPUs with memory delays) |
 
-### 5.2 CPU0 Performance (Consumer Thread)
+### 5.2 CPU Performance
+
+#### CPU0 (Consumer, Main Thread)
 
 **total cycles** = 748,745
 
 | Metric | Accesses | Misses | Miss Rate | Description |
 |--------|----------|--------|-----------|-------------|
-| **L1 D-Cache** | 35,113 | 1,243 | 3.5% | Data cache; high miss rate due to spin-waiting on mailbox |
-| **L1 I-Cache** | 206,447 | 521 | 0.25% | Instruction cache; tight polling loop |
-| **L2 (total)** | — | 1,643 | 90.6% hit | 474 inst + 1,169 data misses |
+| **L1-DCache** | 35,113 | 1,243 | 3.5% | high miss rate due to spin-waiting on mailbox |
+| **L1-ICache** | 206,447 | 521 | 0.25% | tight polling loop |
 
-### 5.3 CPU1 Performance (Producer Thread)
+#### CPU1 (Producer, pthread)
 
 **total cycles** = 733,365
 
 | Metric | Accesses | Misses | Miss Rate | Description |
 |--------|----------|--------|-----------|-------------|
-| **L1 D-Cache** | 8,399 | 96 | 1.1% | Data cache; low miss rate, tight inner loop |
-| **L1 I-Cache** | 31,091 | 142 | 0.46% | Instruction cache; simple accumulation loop |
-| **L2 (total)** | — | 125 | 93.6% hit | 82 inst + 43 data misses |
-
-### 5.4 L2 Unified Cache Summary
-
-| Component | CPU 0 | CPU 1 | Total |
-|-----------|-------|-------|-------|
-| **Demand Misses (Inst)** | 474 | 82 | 556 |
-| **Demand Misses (Data)** | 1,169 | 43 | 1,212 |
-| **Total Misses** | 1,643 | 125 | **1,768** |
-| **Total Accesses** | 1,744 | 207 | **1,951** |
-| **Hit Rate** | 90.6% | 93.6% | - |
-
-### 5.5 Statistics Insights
-
-**CPU Work Distribution:**
+| **L1-DCache** | 8,399 | 96 | 1.1% | low miss rate, tight inner loop |
+| **L1-ICache** | 31,091 | 142 | 0.46% | simple accumulation loop |
 
 - number of cycles: CPU0 > CPU1 (CPU1 is the child thread)
 - instruction accesses: CPU0 >> CPU1 (consumer is polling)
 - Both cores run nearly in parallel (~733k to ~748k cycles) with minimal synchronization overhead
 
-**Cache Behavior:**
+### 5.4 L2 Unified Cache Summary
 
-| Metric | CPU0 | CPU1 | Insight |
-|--------|-------|-------|---------|
-| **L1 D$** | 1,243 misses / 35,113 accesses = 3.5% miss rate | 96 misses / 8,399 accesses = 1.1% miss rate | Producer has very tight memory access; consumer spins and polls ready flag |
-| **L1 I$** | 521 misses / 206,447 accesses = 0.25% miss rate | 142 misses / 31,091 accesses = 0.46% miss rate | Low instruction cache pressure; simple, compact code |
-| **L2 $** | 1,643 total misses (474 inst + 1,169 data) | 125 total misses (82 inst + 43 data) | Producer generates moderate L2 pressure; consumer L2 misses are minimal |
+| Component | CPU0 | CPU1 | Total |
+|-----------|-------|-------|-------|
+| **Demand Misses (Inst)** | 474 | 82 | 556 |
+| **Demand Misses (Data)** | 1,169 | 43 | 1,212 |
+| **Total Misses** | 1,643 | 125 | 1,768 |
+| **Total Accesses** | 1,744 | 207 | 1,951 |
+| **Hit Rate** | 90.6% | 93.6% | - |
 
-**Observations:**
+### 5.5 Observations
 
-1. **No prefetch activity**: demand misses = overall misses (prefetching disabled or not applicable)
-2. **CPU0 is memory-bound**: 35k data accesses vs. 31k for CPU 1 shows consumer doing more memory work (spinning)
-3. **L2 unified cache is effective**: Only 1,768 total L2 misses out of 1,951 L2 accesses = **90.6% L2 hit rate**—excellent for this workload
-4. **Inter-core communication is efficient**: Atomic operations and cache coherency work correctly; no deadlock or excessive L2 thrashing
-5. **Small working set**: ~40k total L1 accesses + ~1,951 L2 accesses suggests the workload fits well within cache hierarchy
-
-**Insights:**
-
-- The shared-memory synchronization with atomics is low-overhead
-- The spin-wait approach (vs. blocking) works well on small core counts
-- Release-acquire ordering enforces cache coherency without excessive flushing
-- This workload is memory-efficient and scales to slightly larger iteration counts without major cache problems
+- **No prefetch activity**: demand misses = overall misses
+- **CPU0 is more memory-intensive**: 35k data accesses vs. 31k for CPU1 shows consumer doing more memory work (spinning)
+- **Inter-thread communication (ITC) is efficient**: Atomic operations and cache coherency work correctly; no deadlock observed
+- **Small working set**: ~40k total L1 accesses + ~1,951 L2 accesses suggests the workload fits well within cache hierarchy; no excessive cache thrashing
 
 ## 6. Conclusion
 
-This lab demonstrated how to build and simulate a two-thread producer-consumer workload on a RISC-V dual-CPU system in gem5. The most important takeaway is that release-acquire semantics are essential for correctness: a release store on the ready flag paired with an acquire load on the consumer side is the minimal ordering that guarantees the consumer sees the producer's payload. `CPU0`'s 3.5% L1 D-cache miss rate vs `CPU1`'s 1.1% directly reflects the spin-wait polling pattern rather than any algorithmic inefficiency.
+This lab demonstrated how to build and simulate a two-thread producer-consumer workload on a RISC-V dual-CPU system in gem5. In this lab, release-acquire semantics are essential for correctness: a release store on the ready flag paired with an acquire load on the consumer side is the minimal ordering that guarantees the consumer sees the producer's payload. `CPU0`'s 3.5% L1 D-cache miss rate vs `CPU1`'s 1.1% directly reflects the spin-wait polling pattern rather than any algorithmic inefficiency.
 
-Going forward, the key practices are to always guard shared data with a release-store/acquire-load pair, add a poll timeout to every spin-wait to prevent silent simulation hangs. It is also worth keeping the working set small when studying synchronization effects on TimingSimpleCPU, and checking stats per-core rather than relying on aggregated totals to inspect asymmetric thread behavior details.
+Going forward, the key practice is to always protect shared mutable data with appropriate synchronization — the right primitive depends on the use case: **spinlocks** for short, low-contention waits; **mutexes and condition variables** for longer or higher-contention scenarios where blocking is cheaper than polling; **semaphores** for coordinating access to a shared resource pool or signaling between multiple producers and consumers; and atomic operations with explicit memory ordering (such as the release-store/acquire-load pair used here) for lightweight, lock-free inter-thread communication (ITC). Each primitive carries its own deadlock risk — mutexes deadlock under circular acquisition order, semaphores under mismatched signal/wait counts — so the general discipline is to define a strict lock ordering, hold locks for the shortest possible duration, and always pair every acquire with a guaranteed release. Always add a timeout to spin-waits to prevent indefinite blocking if a cooperating thread fails.
