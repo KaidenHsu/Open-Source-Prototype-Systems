@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-This lab contains a lightweight producer-consumer workload under gem5 simulation. The workload demonstrates thread synchronization and inter-thread communication on a simulated dual-CPU system using POSIX threads `<pthread.h>` and GCC atomic operations, which is ideal for studying cache behavior, memory ordering, and multi-threaded performance under small core counts.
+This lab contains a lightweight producer-consumer workload under gem5 simulation. The workload demonstrates thread synchronization and inter-thread communication (ITC) on a simulated dual-CPU system using POSIX threads `<pthread.h>` and GCC atomic operations, which is ideal for studying cache behavior, memory ordering, and multi-threaded performance under small core counts.
 
 ## 2. Workflow
 
@@ -32,7 +32,7 @@ PRODUCER_CONSUMER PASS
 
 ## 4. Workload
 
-- **Two threads** (one producer, one consumer) in a single process
+- **Cooperating threads**: (one producer, one consumer) in a single process
 - **No host-file IPC**: avoids unsupported syscalls like `renameat2`
 - **Shared-memory synchronization** via global mailboxes and atomic loads and stores
 - **Release-acquire semantics** to ensure cache coherency across CPUs
@@ -91,7 +91,7 @@ Consumer:  while (!load(mailbox_ready, ACQUIRE)) { spin; }  ← waits, acquires
            verify(sum_obs == expected_sum(N))
 ```
 
-- A release-store by producder and aquire-load spinlock by consumer on `mailbox_ready` enforces correctness in inter-thread communication (ITC), even on weakly-ordered memory models.
+- A release-store by producder and aquire-load spinlock by consumer on `mailbox_ready` enforces correctness between cooperating threads in inter-thread communication (ITC), even on weakly-ordered memory models.
 - While spinlock (busy-waiting) works well on small core counts in this example, blocking locks perform better for larger core counts but sleep/wakeup overhead ensues.
 
 ## 5. Result
