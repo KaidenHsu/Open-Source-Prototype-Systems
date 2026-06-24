@@ -1,14 +1,16 @@
-# Project 3. Two-Core MSI-Coherent Parallel Histogram
+# Project 3. Historgram Binning: Data Layout on a Dual-Core MSI Processor
 
-This package does not use RV32I `.hex` instruction programs. Instead, each core is represented by a small deterministic workload driver that loads an address trace and issues histogram-style read-modify-write memory requests to the private cache.
+## 1. Introduction
 
-## 1. Quick Start
+This project simulates histogram binning on a dual-core processor with an MSI cache coherence protocol to explore how data layout and access patterns affect coherence traffic and performance. Each core runs a deterministic workload driver that replays an address trace, issuing read-modify-write requests (load → increment → store) against a write-back, direct-mapped, blocking private cache. Four workload variants are provided — `shared bins`, `false sharing`, `padded bins`, and `local bins` — each designed to isolate a different interaction between the MSI state machine and cache line granularity. By running all four and comparing bus transaction counts, invalidations, and total cycle counts, students will learn why cache-line-level coherence means that even logically independent data can generate expensive bus traffic, and how data layout choices directly control that cost.
+
+## 2. Workflow
 
 ```bash
-$ ./run.sh
+$ bash run.sh
 ```
 
-## 2. Design
+## 3. Design
 
 - MSI
 - write-back
@@ -26,9 +28,9 @@ $ ./run.sh
 <p align="center"> <img src="./images/FSM_MSI_bus.jpg" alt="bus" align="middle" width=720 /> </p>
 
 
-## 3. Workloads
+## 4. Workloads
 
-### 3.1 Trace format
+### 4.1 Trace format
 
 Each trace line is one hexadecimal word address. For every address, the driver performs:
 
@@ -39,7 +41,7 @@ store bin[address] + 1
 
 The address is a word address, not a byte address. With four-word cache lines, addresses `00`, `01`, `02`, and `03` map to the same cache line, while address `04` maps to the next line.
 
-### 3.2 Workload Variants
+### 4.2 Workload Variants
 
 | Target | Trace files | Purpose |
 |---|---|---|
@@ -70,7 +72,7 @@ The address is a word address, not a byte address. With four-word cache lines, a
 
 ## 5. Results
 
-| **metrics\\workload** | **shared_bins** | **false_sharing** | **padded_bins** | **local_bins** |
+|  | **shared_bins** | **false_sharing** | **padded_bins** | **local_bins** |
 |---|---:|---:|---:|---:|
 | **cycles** | 88 | 88 | 52 | 52 |
 | **hits** | 56 | 56 | 62 | 62 |
@@ -78,3 +80,15 @@ The address is a word address, not a byte address. With four-word cache lines, a
 | **BusRd** | 8 | 8 | 2 | 2 |
 | **BusRdX** | 13 | 13 | 2 | 2 |
 | **invalidations** | 13 | 13 | 0 | 0 |
+
+- **`shared_bins` vs `false_sharing`:** Both workloads produce identical numbers across every metric. Even though the cores in `false_sharing` write to different words, those words land on the same cache line, so the MSI protocol sees the same sequence of ownership transfers and invalidations as true sharing. The protocol has no visibility below the line boundary.
+
+- **`padded_bins` vs `local_bins`:** Both workloads also match exactly. Once each core's data occupies its own cache line, there is no cross-core line ownership contention regardless of whether the addresses are in a shared region or a private one. Misses drop from 8 to 2, invalidations fall to 0, and total cycles drop by 41% (88 → 52).
+
+- **`shared_bins`/`false_sharing` vs `padded_bins`/`local_bins`:** The 36-cycle difference comes entirely from the 13 invalidation round-trips in the high-traffic workloads. Each invalidation forces the other core to re-fetch the line as Modified before it can write, turning what would be a cache hit into a miss with a bus transaction.
+
+## 6. Conclusion
+
+The central result of this project is that `false_sharing` is indistinguishable from true sharing at the hardware level. The MSI protocol tracks ownership per cache line, so two cores writing to different words on the same line generate the exact same `BusRdX` upgrades and invalidations as two cores writing to the same word. Padding data to separate lines (`padded_bins`) was sufficient to eliminate all cross-core invalidations and match the performance of fully private storage (`local_bins`).
+
+Going forward, pad each thread's accumulators to a full cache line boundary. In C/C++, `alignas(64)` on a per-thread struct is the standard mechanism. Privatization can be used where padding is impractical: each thread writes only into private storage during the parallel phase and reduces into shared memory once at the end, naturally avoiding all mid-computation coherence traffic.
