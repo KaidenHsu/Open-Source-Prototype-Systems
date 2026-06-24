@@ -9,7 +9,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Project 1][1-1]| RV32I Single-Cycle Baseline Processor
 [Project 2-1][1-2]| RV32I Pipelined Processor with Cache Subsystem
 [Project 2-2][1-3]| Histogram Binning: Control Flow Reduction and Privatization
-[Project 3][1-4]| Historgram Binning: Data Layouts on a Dual-Core MSI-Coherent Processor
+[Project 3][1-4]| Histogram Binning: Data Layouts on a Dual-Core MSI-Coherent Processor
 [Project 4][1-5]| 2D Convolution Acceleration and Gem5 Custom Instruction Simulation
 
 [1-1]: projects/project1/
