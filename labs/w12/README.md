@@ -1,8 +1,8 @@
-# Week 12 Lab. Evaluating Custom RISC-V Sparse Histogram Binning Instructions
+# Week 12 Lab. Histogram Binning: Evaluating Custom Instructions across Input Distributions and Cache Sizes
 
 ## 1. Introduction
 
-This lab explores a control-heavy, memory-sensitive sparse histogram kernel on two implementations: a baseline and an XHIST version that explores custom RISC-V instructions. Compiler intrinsics functions for the RISC-V custom instruction ideas are implemented in a C header file. The first check is functional validation with QEMU ISA simulation, where both versions produce the same checksum. After that, cycle-accurate gem5 architectural simulator is used to compare cycle-level behavior under different input distributions and cache sizes. Then, a microtest is invoked on one custom instruction idea using QEMU to test the custom instruction correctness. Finally, after learning how custom instruction ideas can be added, students have to propose a new custom instruction idea and add it to the compiler intrinsics header file, the processor datapath implementation or custom instruction gem5 simulation is not required in this lab.
+This lab explores a control-heavy, memory-sensitive histogram binning kernel on two implementations: a baseline and an XHIST version that explores custom RISC-V instructions. Compiler intrinsics functions for the RISC-V custom instruction ideas are implemented in a C header file. The first check is functional validation with QEMU ISA simulation, where both versions produce the same checksum. After that, cycle-accurate gem5 architectural simulator is used to compare cycle-level behavior under different input distributions and cache sizes. Then, a microtest is invoked on one custom instruction idea using QEMU to test the custom instruction correctness. Finally, after learning how custom instruction ideas can be added, students have to propose a new custom instruction idea and add it to the compiler intrinsics header file, the processor datapath implementation or custom instruction gem5 simulation is not required in this lab.
 
 ## 2. Workflow
 
@@ -12,7 +12,7 @@ $  bash run.sh
 
 ## 3. Workloads
 
-### 3.1 Baseline Sparse Histogram (`hist_baseline.c`)
+### 3.1 Baseline Histogram (`hist_baseline.c`)
 
 ``` c
 if (x >= min_val && x < max_val) {
