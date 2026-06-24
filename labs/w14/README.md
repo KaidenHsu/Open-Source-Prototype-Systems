@@ -1,4 +1,4 @@
-# Week 14 Lab. Timing Side-Channel Security: Token Comparator Leakage in RTL
+# Week 14 Lab. Timing Side-Channel Security: Early-Exit Leakage in a Token Comparator
 
 ## 1. Introduction
 
@@ -7,7 +7,7 @@ This lab demonstrates timing leakage in an RTL token comparator. Students start 
 ## 2. Workflow
 
 ```bash
-$ ./run.sh
+$ bash run.sh
 ```
 
 Use `make wave-buggy` or `make wave-fixed` to open the generated VCD in GTKWave.

@@ -1,29 +1,10 @@
-# Week 13 Lab: McPAT Processor Energy Analysis: Cache Size vs Clock Frequency
+# Week 13 Lab: McPAT Energy Analysis: Cache Size and Frequency Sensitivity across Workloads
 
 ## 1. Introduction
 
-The exercise compares a baseline gem5 run against controlled variants and computes energy metrics using McPAT.
+In this lab, three workloads, `array_sum`, `branchy_loop`, and `mini_matmul` are compiled and run through gem5 under a baseline configuration and two controlled variants — one increasing L1 data cache size (`Variant A`) and one increasing clock frequency (`Variant B`). The resulting simulation stats are fed into McPAT to estimate dynamic power, leakage power, total energy, energy per instruction (EPI), and energy-delay product (EDP). By comparing these metrics across workloads and configurations, this lab demonstrates how memory access patterns and branch behavior interact with microarchitectural knobs, and why the same hardware change can have very different energy implications depending on the workload.
 
 ## 2. Workflow
-
-```bash
-$ docker pull amansinhaatnycu/osp:week13-power
-
-$ docker run --rm -it \
-  -v "$(pwd)":/work \
-  -w /work \
-  amansinhaatnycu/osp:week13-power \
-  bash
-```
-
-- Build a small RISC-V workload.
-- Run the workload in gem5 for three configurations:
-   - `baseline`: timing CPU, 32 KB L1 I/D caches, 256 KB L2.
-   - `l1d_big`: larger L1 data cache.
-   - `freq_fast`: same cache hierarchy but different frequency assumption.
-- Convert gem5 statistics into McPAT XML using a conservative template-based converter.
-- Run McPAT.
-- Compute runtime, average power, total energy, EPI, and EDP.
 
 ```bash
 # repeat this for all 3 workloads
@@ -31,9 +12,25 @@ $ bash scripts/run_all_exercises.sh workloads/array_sum.c
 # observe final summary in results/summary.csv or results/summary.md
 ```
 
+- Build a small RISC-V workload.
+- Run the workload in gem5 under three configurations:
+   - `baseline`: timing CPU, 32 KB L1 I/D caches, 256 KB L2.
+   - `l1d_big`: larger L1 data cache.
+   - `freq_fast`: same cache hierarchy but different frequency assumption.
+- Convert gem5 statistics into McPAT XML using a conservative template-based converter.
+- Run McPAT.
+- Compute runtime, average power, total energy, EPI, and EDP.
+
 - Interpret whether the energy change comes mainly from runtime, activity, or leakage.
 
-## 3. McPAT Runtime Guard
+## 3. McPAT
+
+### 3.1 Guidance
+
+- McPAT estimates are produced from example templates and heuristic mappings of simulator counters to activity factors. They do not include post‑layout parasitics, process‑corner tuning, physical implementation details, or on‑chip/off‑chip measurement calibration. As a result, McPAT outputs are useful for relative trends and architectural sensitivity analysis but not for absolute power signoff.
+- Treat McPAT outputs as comparative guidance; if absolute accuracy is required, calibrate templates/patches against measured data or more detailed physical models.
+
+### 3.2 McPAT Runtime Guard
 
 This package uses compact McPAT output by default:
 
@@ -55,13 +52,113 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 ```
 
 - The XML converter is intentionally compact for teaching. It preserves the selected McPAT example template and patches common activity and configuration fields when matching names are found.
-- Always compare runs with the same binary and input size.
-- McPAT estimates should be interpreted as model-based trends, not post-layout power signoff.
 
 ## 4. Workloads and Configurations
 
-- Workloads: `array_sum.c`, `branchy_loop.c`, `mini_matmul.c`
+### 4.1 Workloads
+
+### `array_sum.c`: Sequential Memory Access
+
+``` c
+static uint32_t a[N];
+
+int main(void) {
+    for (int i = 0; i < N; i++) {
+        a[i] = (uint32_t)((i * 1103515245u + 12345u) & 0xffffu);
+    }
+
+    volatile uint64_t sum = 0;
+    for (int r = 0; r < ITERS; r++) {
+        for (int i = 0; i < N; i++) {
+            sum += a[i];
+        }
+    }
+
+    printf("array_sum: N=%d ITERS=%d sum=%llu\n", N, ITERS, (unsigned long long)sum);
+    return (sum == 0) ? 1 : 0;
+}
+```
+
+- Sequential, stride-1 reads make this maximally cache-friendly — a large enough L1D can hold the entire array and eliminate nearly all misses.
+- Compute is trivial (one addition per element); runtime is dominated by memory bandwidth, not arithmetic.
+
+### `branchy_loop.c`: Irregular Branching
+
+``` c
+static uint32_t x[N];
+
+int main(void) {
+    for (int i = 0; i < N; i++) {
+        uint32_t v = (uint32_t)(i * 2654435761u);
+        x[i] = v ^ (v >> 13);
+    }
+
+    volatile uint64_t acc = 0;
+    for (int r = 0; r < ITERS; r++) {
+        for (int i = 0; i < N; i++) {
+            uint32_t v = x[i];
+            if ((v & 7u) == 0u) {
+                acc += v * 3u;
+            } else if ((v & 3u) == 1u) {
+                acc ^= (uint64_t)v << 1;
+            } else {
+                acc += v >> 2;
+            }
+        }
+    }
+
+    printf("branchy_loop: N=%d ITERS=%d acc=%llu\n", N, ITERS, (unsigned long long)acc);
+    return (acc == 0) ? 1 : 0;
+}
+```
+
+- Branch outcomes depend on hash-derived data values, making them unpredictable and stressing the branch predictor.
+- Miss pressure comes primarily from branch stalls, not spatial locality.
+
+### `mini_matmul.c`: Compute-Bound, Cache-Friendly Reuse
+
+``` c
+static int32_t A[N][N];
+static int32_t B[N][N];
+static int32_t C[N][N];
+
+int main(void) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            A[i][j] = (i + j) & 15;
+            B[i][j] = (i * 3 - j) & 15;
+            C[i][j] = 0;
+        }
+    }
+
+    for (int r = 0; r < ITERS; r++) {
+        for (int i = 0; i < N; i++) {
+            for (int k = 0; k < N; k++) {
+                int32_t aik = A[i][k];
+                for (int j = 0; j < N; j++) {
+                    C[i][j] += aik * B[k][j];
+                }
+            }
+        }
+    }
+
+    volatile int64_t checksum = 0;
+    for (int i = 0; i < N; i++) {
+        checksum += C[i][i];
+    }
+    printf("mini_matmul: N=%d ITERS=%d checksum=%lld\n", N, ITERS, (long long)checksum);
+    return (checksum == 0) ? 1 : 0;
+}
+```
+
+- Hoisting `A[i][k]` out of the innermost loop eliminates redundant loads; the inner loop then streams sequentially through a row of `B`, maximizing spatial locality.
+- The i-k-j loop order keeps the working set small, making this workload compute-bound. This matrix summation is repeated `r` times.
+- The checksum sums only the diagonal of `C`, acting as a lightweight correctness check rather than iterating the entire output matrix.
+
+### 4.2 Configurations
+
 - Baseline configuration:
+
 ``` bash
 --cpu-type=TimingSimpleCPU 
 --sys-clock=1GHz --cpu-clock=1GHz 
@@ -71,8 +168,9 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 --l1i_assoc=2 --l1d_assoc=2 
 --l2_size=256kB --l2_assoc=8 
 ```
-- Variant A (`freq_fast`) change: `--cpu-clock=1.2GHz `
-- Variant B (`l1d_big`) change: `--l1d_size=64kB --l1d_assoc=4`
+
+- Variant A (`freq_fast`) modification: `--cpu-clock=1.2GHz`
+- Variant B (`l1d_big`) modification: `--l1d_size=64kB --l1d_assoc=4`
 
 ## 5. Results
 
@@ -92,7 +190,7 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 | freq_fast | 0.038125 | 4.57678e+07 | 1.63047e+07 | 3.20317e+06 | 68663 | 0.0875649 | 0.133595 | 0.22116 | 0.00843172 | 5.17134e-10 | 0.000321459 |
 | l1d_big | 0.045732 | 4.57316e+07 | 1.63047e+07 | 3.20317e+06 | 68638 | 0.0848442 | 0.15519 | 0.240034 | 0.0109772 | 6.73256e-10 | 0.000502011 |
 
-### 5.3 ``mini_matmul.c`
+### 5.3 `mini_matmul.c`
 
 | config | sim_seconds | cycles | instructions | dcache_accesses | dcache_misses | dynamic_w | leakage_w | avg_power_w | energy_j | epi_j_per_inst | edp_j_s |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -102,14 +200,13 @@ export MCPAT_TEMPLATE=/opt/mcpat/ProcessorDescriptionFiles/ARM_A9_2GHz.xml
 
 ### 5.4 Observations
 
-| Aspect | Observation |
-| --- | --- |
-| Runtime effect | `freq_fast` reduces runtime while `l1d_big` has little impact |
-| Activity / dynamic-power effect | both `freq_fast` and `l1d_big` increase `dynamic_w` |
-| Leakage effect | `l1d_big` > `freq_fast` > `baseline` |
-| Cache or memory effect | significantly fewer `dcache_misses` for `array_sum.c`, but not for `branchy_loop.c` and `mini_matmul.c` |
+- **Runtime effect**: `freq_fast` reduces runtime while `l1d_big` has little impact
+- **Activity / dynamic-power effect**: both `freq_fast` and `l1d_big` increase `dynamic_w`
+- **Leakage effect**: `l1d_big` > `freq_fast` > `baseline`
+- **Cache or memory effect**: significantly fewer `dcache_misses` for `array_sum.c` than for `branchy_loop.c` and `mini_matmul.c`
 
 ## 6. Conclusion
 
-- McPAT estimates are produced from example templates and heuristic mappings of simulator counters to activity factors. They do not include post‑layout parasitics, process‑corner tuning, physical implementation details, or on‑chip/off‑chip measurement calibration. As a result, McPAT outputs are useful for relative trends and architectural sensitivity analysis but not for absolute power signoff.
-- Always compare runs using the same binary and input size. Treat McPAT outputs as comparative guidance; if absolute accuracy is required, calibrate templates/patches against measured data or more detailed physical models.
+The results confirm that no single hardware change uniformly improves energy efficiency across all workloads. Increasing clock frequency (`freq_fast`) reduces runtime for all three workloads but raises dynamic power, with the net effect on total energy depending on how runtime-sensitive the workload is. Increasing L1D cache size (`l1d_big`) benefits only workloads whose working set fits in the larger cache — `array_sum` sees a dramatic reduction in misses while `branchy_loop` and `mini_matmul` see almost none. McPAT's leakage estimates also rise with cache size regardless of whether the extra capacity is used, which can make a larger cache a net loss when the miss-reduction benefit is small.
+
+Going forward, when using gem5 and McPAT for energy analysis: Always compare runs using the same binary and input size, since any change in compiled code or problem scale invalidates direct energy comparisons. Treat McPAT outputs as relative trends rather than absolute figures, as the tool relies on template-based models without considering physical constraints. When a configuration change appears to improve one metric, check the others — a faster runtime that raises leakage-dominated total energy is not necessarily a win.

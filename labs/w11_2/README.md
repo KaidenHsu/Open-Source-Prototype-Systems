@@ -1,4 +1,4 @@
-# Week 11 Lab 2. Producer-Consumer Multithreading Dual-CPU Synchronization
+# Week 11 Lab 2. Producer-Consumer: Dual-CPU pthread Synchronization via Release-Acquire Atomics
 
 ## 1. Introduction
 

@@ -26,10 +26,10 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Week 6 Lab][2-2]| Cache 3C Model, Locality, and Write Reuse
 [Week 10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
 [Week 11 Lab 1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
-[Week 11 Lab 2][2-5]| Producer-Consumer Multithreading Dual-CPU Synchronization
+[Week 11 Lab 2][2-5]| Producer-Consumer: Dual-CPU pthread Synchronization via Release-Acquire Atomics
 [Week 12 Lab][2-6]| Histogram Binning: Evaluating Custom Instructions across Input Distributions and Cache Sizes
-[Week 13 Lab][2-7]| McPAT Processor Energy Analysis: Cache Size vs Clock Frequency
-[Week 14 Lab][2-8]| Timing Side-Channel Security: Token Comparator Leakage in RTL
+[Week 13 Lab][2-7]| McPAT Energy Analysis: Cache Size and Frequency Sensitivity across Workloads
+[Week 14 Lab][2-8]| Timing Side-Channel Security: Early-Exit Leakage in a Token Comparator
 [Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration: Round-Robin and Aging
 
 [2-1]: labs/w03/
