@@ -1,4 +1,4 @@
-# Week 15 Lab. Fair-Shared Accelerator Arbitration
+# Week 15 Lab. Fair-Shared Accelerator Arbitration: Round-Robin and Aging
 
 ## 1. Introduction
 

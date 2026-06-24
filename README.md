@@ -9,7 +9,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Project 1][1-1]| RV32I Single-Cycle Baseline Processor
 [Project 2-1][1-2]| RV32I Pipelined Processor with Cache Subsystem
 [Project 2-2][1-3]| Histogram Binning: Control Flow Reduction and Privatization
-[Project 3][1-4]| Historgram Binning: Data Layout on a Dual-Core MSI-Coherent Processor
+[Project 3][1-4]| Historgram Binning: Data Layouts on a Dual-Core MSI-Coherent Processor
 [Project 4][1-5]| 2D Convolution Acceleration and Gem5 Custom Instruction Simulation
 
 [1-1]: projects/project1/
@@ -30,7 +30,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
 [Week 12 Lab][2-6]| Evaluating Custom RISC-V Sparse Histogram Binning Instructions
 [Week 13 Lab][2-7]| McPAT Processor Energy Analysis: Cache Size vs Clock Frequency
 [Week 14 Lab][2-8]| Timing Side-Channel Security: Token Comparator Leakage in RTL
-[Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration
+[Week 15 Lab][2-9]| Fair-Shared Accelerator Arbitration: Round-Robin and Aging
 
 [2-1]: labs/w03/
 [2-2]: labs/w06/

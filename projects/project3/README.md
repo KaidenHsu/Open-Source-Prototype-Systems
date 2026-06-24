@@ -1,8 +1,8 @@
-# Project 3. Historgram Binning: Data Layout on a Dual-Core MSI-Coherent Processor
+# Project 3. Historgram Binning: Data Layouts on a Dual-Core MSI-Coherent Processor
 
 ## 1. Introduction
 
-This project simulates histogram binning on a dual-core processor with an MSI cache coherence protocol to explore how data layout and access patterns affect coherence traffic and performance. Each core runs a deterministic workload driver that replays an address trace, issuing read-modify-write requests (load → increment → store) against a write-back, direct-mapped, blocking private cache. Four workload variants are provided — `shared bins`, `false sharing`, `padded bins`, and `local bins` — each designed to isolate a different interaction between the MSI state machine and cache line granularity. By running all four and comparing bus transaction counts, invalidations, and total cycle counts, students will learn why cache-line-level coherence means that even logically independent data can generate expensive bus traffic, and how data layout choices directly control that cost.
+In project 3, students need first implement a MSI-coherent dual core system, which is then used to execute a histogram binning workload to explore how data layouts affect coherence traffic and performance. Each core runs a deterministic workload driver that replays an address trace, issuing read-modify-write requests (load → increment → store) against a write-back, direct-mapped, blocking private cache. Four workload variants are provided — `shared bins`, `false sharing`, `padded bins`, and `local bins` — each designed to isolate a different interaction between the MSI state machine and cache line granularity. By running all four and comparing bus transaction counts, invalidations, and total cycle counts, students will learn why cache-line-level coherence means that even logically independent data can generate expensive bus traffic, and how data layout choices directly control that cost.
 
 ## 2. Workflow
 
