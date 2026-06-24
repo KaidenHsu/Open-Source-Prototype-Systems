@@ -1,4 +1,4 @@
-# Project 3. Historgram Binning: Data Layout on a Dual-Core MSI Processor
+# Project 3. Historgram Binning: Data Layout on a Dual-Core MSI-Coherent Processor
 
 ## 1. Introduction
 
