@@ -32,7 +32,7 @@ PRODUCER_CONSUMER PASS
 
 ## 4. Workload
 
-<p align="center"><img src="images/multithreaded_processes.jpg" alt="multithreaded processes" width="720" /></p>
+<p align="center"><img src="images/multithreaded_processes.jpg" alt="multithreaded processes" width="540" /></p>
 
 - **Cooperating threads**: (one producer, one consumer) in a single process
 - **No host-file IPC**: avoids unsupported syscalls like `renameat2`
