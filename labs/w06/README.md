@@ -1,4 +1,4 @@
-# Week 6 Lab. Memory Access Patterns: Cache 3C Model, Locality, and Write Reuse
+# Week 6 Lab. Cache Behavior Traces: 3C Model, Locality, and Write Reuse
 
 ## 1. Introduction
 
