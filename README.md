@@ -23,7 +23,7 @@ course projects and labs for "Open Source Prototype Systems and Applications (20
  Labs   | Descriptions
 --------|:-----
 [Week 3 Lab][2-1]| RV32I Smoke Test and Linker Script
-[Week 6 Lab][2-2]| Cache 3C Model, Locality, and Write Reuse
+[Week 6 Lab][2-2]| Memory Access Patterns: Cache 3C Model, Locality, and Write Reuse
 [Week 10 Lab][2-3]| Debugging a Broken Snooping Invalidation Interface
 [Week 11 Lab 1][2-4]| Dual-Core Cache Coherence Prototype System Stabilization
 [Week 11 Lab 2][2-5]| Producer-Consumer: Dual-CPU pthread Synchronization via Release-Acquire Atomics

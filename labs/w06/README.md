@@ -1,10 +1,8 @@
-# Week 6 Lab. Cache 3C Model, Locality, and Write Reuse
+# Week 6 Lab. Memory Access Patterns: Cache 3C Model, Locality, and Write Reuse
 
 ## 1. Introduction
 
-On a 2-line, 2-word-per-line direct-mapped write-through write-allocate cache backed by a 3-cycle-latency RAM, five hand-written RISC-V programs each stress a distinct access pattern — capacity pressure, conflict thrashing, spatial locality, temporal locality, and write reuse — to reveal, in cycle counts, how the cache rewards sequential and repeated access while punishing address patterns that collide in the same cache index.
-
-Students will complete the marked TODOs in `memory_hierarchy.sv` — restoring hit detection and the read/write hit paths — then run all five programs and observe how each workload's access pattern produces a distinct hit rate and CPI.
+On an L1-cache backed by a 3-cycle-latency RAM, five hand-written RISC-V programs each stresses a distinct access pattern — capacity pressure, conflict thrashing, spatial locality, temporal locality, and write reuse — to reveal, in cycle counts, how the cache rewards sequential and repeated access while punishing address patterns that collide in the same cache index. Students will first complete the marked TODOs in `memory_hierarchy.sv` — restoring hit detection and the read/write hit paths — then run all five programs and observe how each workload's access pattern produces a distinct hit rate and CPI.
 
 ## 2. Workflow
 
