@@ -6,3 +6,7 @@
 *.vcd linguist-generated
 *.fst linguist-generated
 *.rpt linguist-generated
+
+.agents/
+.aws/
+.codex/

@@ -91,6 +91,6 @@ This table compares `Number of Cells` of `shared_accel_arbiter` across arbitrati
 
 We can observe that the aging logic does cost significant area overhead, which can be attributed to the deeper MUX. Further optimizations can be carried out to balance the circuit PPA.
 
-## Conclusion
+## 7. Conclusion
 
 From this lab, I learned that how arbitration unfairness leads to starvation, and how a simple round-robin policy can alleviate this issue. Despite the addition of aging logic not changing max waiting time in this lab, it can be helpful when more requestors come in and load imbalance is present. I also learned that we can use `max_wait_time` performance counters to detect arbitration unfairness. Going forward, we should keep in mind that functional correctness alone is insufficient for a robust prototype system and arbitration fairness should be enforced in a multiple requestor system.
